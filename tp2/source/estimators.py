@@ -5,7 +5,7 @@ import numpy as np
 import pylab
 import random
 
-class Estimator(object):
+class Estimador(object):
     """Clase base de los estimadores."""
 
     def __init__(self, db, table, column, parameter=10):
@@ -25,3 +25,34 @@ class Estimator(object):
 
     def estimate_greater(self, value):
         raise NotImplementedError()
+
+class ClassicHistogram(Estimador):	#Estimador de Piatetsky-Shapiro basado en histogramas clásicos
+	def build_struct(self):
+		pass
+
+	def estimate_equal(self):
+		pass
+
+	def estimate_greater(self):
+		pass
+
+class DistributionSteps(Estimador):	#Estimador de Piatetsky-Shapiro basado en Distribution Steps
+	def build_struct(self):
+		pass
+
+	def estimate_equal(self):
+		pass
+
+	def estimate_greater(self):
+		pass
+
+class EstimadorPropio(Estimador):
+	def build_struct(self):
+		pass
+
+	def estimate_equal(self):
+		pass
+
+	def estimate_greater(self):
+		pass
+

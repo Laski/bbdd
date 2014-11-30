@@ -32,11 +32,27 @@ class InterfazBD:
 			self.insertar_registro(tabla, registro)
 		self.commit()
 
+	def consultar(self, tablas, columnas, criterios):
+		consulta = "SELECT " + columnas + " FROM " + tablas + self.armar_where(criterios)
+		return self.realizar_consulta(consulta)
+
 	def realizar_consulta(self, consulta):
 		res = []
 		for resultado in self.conexion.execute(consulta):
 			res.append(resultado)
 		return res
+
+	def actualizar_registros(self, tabla, cambios, criterios):
+		# 'cambios' puede ser una lista "columna1=valor1, columna2=valor2..." o "valor1, valor2, ..."
+		# 'criterios' es cualquier cosa que acepte un WHERE. podría ser vacío.
+		comando = "UPDATE " + tabla + " SET " + cambios + self.armar_where(criterios)
+		self.conexion.execute(comando)
+		self.commit()
+
+	def borrar_registros(self, tabla, criterio):
+		comando = "DELETE FROM " + tabla + " WHERE " + criterio
+		self.conexion.execute(comando)
+		self.commit()
 
 	def borrar_tabla(self, nombre):
 		try:
@@ -47,6 +63,36 @@ class InterfazBD:
 			else:
 				raise
 
+	def mostrar_tablas(self):
+		return self.consultar("sqlite_master", "name", "type='table'")
+
+	def armar_where(self, criterio):
+		if criterio == "":
+			return ""
+		else:
+			return " WHERE " + criterio
+
+	def crear_indice(self, tabla, nombre, columnas):
+		comando = "CREATE INDEX " + nombre + " ON " + tabla + "(" + columnas + ")"
+		self.conexion.execute(comando)
+		self.commit()
+
+	def listar_tabla(self, tabla):
+		comando = "PRAGMA table_info(" + tabla + ")"
+		return self.realizar_consulta(comando)
+
+	def listar_tablas(self):
+		tablas = self.mostrar_tablas()
+		res = []
+		for tabla in tablas:
+			nombre_tabla = tabla[0]
+			res.append(nombre_tabla)
+			res.append(self.listar_tabla(nombre_tabla))
+		return res
+
+	def listar_indices(self, tabla):
+		consulta = "PRAGMA index_list(" + tabla + ")"
+		return self.realizar_consulta(consulta)
 
 
 def test():
@@ -55,7 +101,16 @@ def test():
 	bd.crear_tabla("persona", "nombre text, apellido text, edad integer")
 	bd.insertar_registro("persona", ("Nahuel", "Lascano", 23))
 	bd.insertar_registro("persona", ("Pablo", "Artuso", 23))
-	print(bd.realizar_consulta("SELECT * FROM persona"))
+	bd.actualizar_registros("persona", "apellido='Laski'", "nombre='Nahuel'")
+	bd.borrar_registros("persona", "apellido='Artuso'")
+	bd.crear_indice("persona", "indice1", "apellido")
+	print(bd.consultar("persona", "*", ""))
+	print(bd.mostrar_tablas())
+	print(bd.listar_tablas())
+	print(bd.listar_indices("persona"))
+
+
+
 
 if __name__ == "__main__":
 	test()

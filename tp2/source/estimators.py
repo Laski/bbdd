@@ -14,7 +14,7 @@ class Estimador(object):
         self.column = column
         self.parameter = parameter
 
-        # Construye las estructuras necesita el estimador.
+        # Construye las estructuras que necesita el estimador.
         self.build_struct()
 
     def build_struct(self):

@@ -9,14 +9,15 @@ import random
 def validar(db,tabla,columna):
 	def nombres_columnas(columnas):
 		return [t[1] for t in columnas]
-
+	def tipos_columnas(columnas):
+		return [t[2] for t in columnas]
 
 	db = InterfazBD(db)
 	res = db.listar_tablas()
 	for i in range(0,len(res),2):
-		if res[i] == tabla and  columna in nombres_columnas(res[i+1]):
-			return True
-	print("Tabla/Columna ingresada no existe")
+		if res[i] == tabla and columna in nombres_columnas(res[i+1]):
+			index = nombres_columnas(res[i+1]).index(columna)
+			return 'int' == tipos_columnas(res[i+1])[index] 
 	return False
  	
 class Estimador(object):
@@ -34,6 +35,7 @@ class Estimador(object):
     		# Construye las estructuras que necesita el estimador.
        		self.build_struct()
        	else:
+       		print("La Tabla/Columna ingresada no existe o el tipo no es INT")
        		exit()
 
     def build_struct(self):

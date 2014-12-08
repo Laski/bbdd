@@ -89,6 +89,7 @@ class InterfazBD:
 		return self.conexion.execute(consulta)
 
 	def realizar_consulta(self, consulta):
+		# para consultas complejas se puede llamar directamente
 		return self.conexion.execute(consulta)
 
 

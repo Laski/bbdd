@@ -89,8 +89,8 @@ class DistributionSteps(Estimador):
         self.altura_bucket = self.cantidad/self.parametro
         self.separadores = [1+i*self.altura_bucket for i in range(self.parametro)]    # self.separadores tiene las "posiciones" mencionadas en el paper, los puntos de corte
         self.separadores.append(self.cantidad)   # la ultima posicion debe ser siempre la cantidad total de filas, sin importar las cuestiones de redondeo
-        print self.separadores
-        self.bordes = []    # la idea es que self.bordes[i] = STEP(i). es decir, que tenga los valores limite de cada bucket del histograma
+        
+        self.bordes = []    # queremos self.bordes[i] = STEP(i). es decir, que tenga los valores limite de cada bucket del histograma
         consulta_ordenada = "SELECT " + self.columna + " FROM " + self.tabla + " ORDER BY " + self.columna + " ASC"
         i = 0
         for valor in self.db.realizar_consulta(consulta_ordenada):
@@ -99,11 +99,12 @@ class DistributionSteps(Estimador):
                 # tengo un nuevo bucket
                 valor = valor[0]    # desempaqueto
                 self.bordes.append(valor)
-        print (self.bordes) #debug
         self.probabilidad_por_bucket = 1.0 / self.parametro
 
+
+    # TODO: hay que elegir si queremos minimizar el error en el peor caso o minimizar el error promedio. lo primero parece más sencillo.
     def estimate_equal(self, valor):
-        return 0.5/self.parametro     # no depende del valor
+        return 0.5/self.parametro     # no depende del valor   #TODO: ver casos borde
 
     def estimate_greater(self, valor):
         bucket = self.ubicar_valor(valor)

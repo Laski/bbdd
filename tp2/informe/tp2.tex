@@ -1,0 +1,112 @@
+\documentclass[a4paper,10pt]{article}
+
+\usepackage[margin=1in]{geometry} 	% Setea el margen manualmente, todos iguales.
+\usepackage[spanish]{babel} 		% {Con estos dos anda
+\usepackage[utf8]{inputenc} 		% todo lo que es tildes y ñ}
+\usepackage{fancyhdr} 			%{Estos dos son para
+\usepackage{ulem}
+\pagestyle{fancyplain} 			% el header copado}
+\usepackage{color}			% Con esto puedo hacer la matufia de poner en color blanco un texto para engaÃ±ar al formato
+\usepackage{graphicx}	% Para insertar grÃ¡ficos
+\usepackage{array}			% Para usar arrays
+\usepackage{hyperref}		% Para que tenga links el índice
+\usepackage{lscape}         % Para apaisar figuras
+\usepackage{ textcomp }
+\usepackage{ulem}
+
+%\usepackage{datetime}	% Para agregar automÃ¡ticamente fecha/hora de compilaciÃ³n y otras cosas
+
+\lhead{Bases de Datos} 	% {Con esto se usa el header copado. TambiÃ©n estÃ¡ \chead para
+\rhead{TP1} 	% el centro y comandos para el pie de pÃ¡gina, buscar fancyhdr}
+\renewcommand{\footrulewidth}{0.4pt}
+\lfoot{Facultad de Ciencias Exactas y Naturales}
+\rfoot{Universidad de Buenos Aires}
+%\rfoot{\textit{}}
+\usepackage{amsfonts}	% para simbolos de reales, naturales, etc. se usa \mathbb{â¢} y la letra
+\usepackage{amsmath}	% para \implies
+%\usepackage{algorithm}
+%\usepackage{algorithmic}
+\usepackage{caratula}
+\usepackage{pdfpages}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%      COMANDOS ÃTILES USADOS       %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% \section{title} 		Te hace un tÃ­tulo ``importante'' en negrita, numerado. TambiÃ©n estÃ¡ \subsection{title} y \subsubsection{title}.
+% \begin{itemize}		Te hace viÃ±etas.
+%	\item esto es un item	Cambiar itemize por enumerate te hace una numeraciÃ³n.
+% \end{itemize}
+
+% \textbf{text} 		Te hace el texto en negrita (bold).
+% \underline{text}		Te subraya el texto.
+
+% \textsuperscript{text}	Te hace ``superindices'' con texto. En teorÃ­a subscript deberÃ­a funcionar, pero se puede usar guion bajo entre llaves
+% 				y signos peso para hacerlo como alternativa. Sino buscar.
+
+% \begin{tabular}{cols} 	Es para hacer tablas. Se pone una c por cada columna deseada dentro de cols (si es que se desea centrada, l para justificar a 
+%	a & b & c		izquierda, r a la derecha). Si se separa por espacios la tabla no tendrÃ¡ lÃ­neas divisorias. Si se separa por | en lugar de 
+% \end{tabular}			espacios, aparecerÃ¡ una lÃ­nea. Con || dos, y asÃ­. Luego para los elementos de las filas se escriben y se separan con ampersand (&).
+%				Finalmente, para las lÃ­neas horizontales, se usa \hline para una linea en toda la tabla y \cline{i - j} te hace la linea desde
+%				la celda i hasta la j, arrancando en 1.
+%				Si en la columna se pone p(width) podÃ©s escribir un pÃ¡rrafo en la celda. Para hacer un enter con \\ no funciona porque te hace un
+%				enter en la fila. Para eso se usa el comando \newline.
+  
+% \textcolor{color predefinido en palabras}{text}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%    FIN COMANDOS ÃTILES USADOS     %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\Gather}[1]{\begin{gather*}#1\end{gather*}}
+%\newcommand{\Def}[1]{\textbf{DefiniciÃ³n: }#1}
+%\newcommand{\Prop}[1]{\textbf{Propiedad: }#1}
+%\newcommand{\Teo}[1]{\textbf{Teorema: }#1}
+\newcommand{\Obs}[1]{\textbf{ObservaciÃ³n: }#1}
+%\newcommand{\Amat}{A \in \mathbb{R}^{n\textnormal{x}n}}
+\newcommand{\filtro}[1]{\textbf{\textit{#1}}}
+\renewcommand{\labelenumii}{\theenumii}
+\renewcommand{\theenumii}{\theenumi.\arabic{enumii}.}
+
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%			INICIO DE CARÃTULA			%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%\include{caratula}
+
+\materia{Bases de Datos}
+\submateria{Segundo Cuatrimestre de 2014}
+\titulo{Trabajo Práctico 2 - Estimadores}
+
+\grupo{}
+\integrante{Martinez Suñe, Agustín}{630/11}{aemartinez@dc.uba.ar}
+\integrante{Iglesias, Axel}{79/10}{axeligl@gmail.com}
+\integrante{Lascano, Nahuel}{476/11}{laski.nahuel@gmail.com}
+\integrante{Artuso, Pablo}{282/11}{artusopablo@gmail.com}
+
+\begin{titlepage}
+\maketitle
+\thispagestyle{empty}
+\end{titlepage} 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%				FIN DE CARÃTULA			%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\tableofcontents
+%\clearpage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%					DESARROLLO				%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\include{introduccion}
+\include{estimadores}
+\include{teorico}
+\include{empirico}
+\include{discusion}
+\include{conclusiones}
+
+\end{document}

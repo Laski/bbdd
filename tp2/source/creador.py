@@ -19,11 +19,11 @@ def creador_normal(mu, sigma):
   bd.crear_tabla("datos", "c1 integer, c2 integer, c3 integer")
 
   for i in range(10000):
-    x = random.gauss(mu, sigma)
+    x = int(random.gauss(mu, sigma))
     y = random.randint(1,10)
     z = random.randint(1,1000)
     bd.insertar_registro("datos", (x, y, z))
 
 if __name__ == "__main__":
   creador_uniforme()
-  creador_normal(1, 0.3)
+  creador_normal(50, 15)

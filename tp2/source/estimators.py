@@ -18,11 +18,11 @@ def validar(db, tabla, columna):
     for i in range(0, len(tablas), 2):
         if tablas[i] == tabla and columna in nombres_columnas(tablas[i+1]):
             index_columna = nombres_columnas(tablas[i+1]).index(columna)
-            assert 'int' == tipos_columnas(tablas[i+1])[index_columna], "La columna no es de tipo entero"
+            assert 'integer' == tipos_columnas(tablas[i+1])[index_columna], "La columna no es de tipo entero"
             return
     assert False, "La tabla no existe o no tiene la columna especificada"
-    
-    
+
+
 class Estimador(object):
     """Clase base de los estimadores."""
     def __init__(self, db, tabla, columna, parametro=10):
@@ -41,10 +41,10 @@ class Estimador(object):
         self.consulta_cuenta_ocurrencias = "SELECT " + self.columna + ", COUNT(*) FROM " + self.tabla + " GROUP BY " + self.columna
         # valores utiles
         self.n_registros = list(self.db.realizar_consulta(self.consulta_cantidad_tuplas))[0][0]
-        
+
         # inicializo las estructuras
         self.build_struct()
-        
+
     def build_struct(self):
         raise NotImplementedError()
 
@@ -104,7 +104,7 @@ class DistributionSteps(Estimador):
         self.altura_bucket = self.n_registros / self.parametro                        # la altura ideal de todos los buckets
         self.separadores = [1+i*self.altura_bucket for i in range(self.parametro)]    # self.separadores tiene las "posiciones" de corte en el arreglo de registros
         self.separadores.append(self.n_registros)   # la ultima posicion debe ser siempre la cantidad total de filas, sin importar las cuestiones de redondeo
-        
+
         self.bordes = []    # queremos self.bordes[i] = lo que el paper llama STEP(i). es decir, que tenga los valores limite de cada bucket del histograma.
         i = 0
         for (valor, ) in self.db.realizar_consulta(self.consulta_ordenada):
@@ -120,14 +120,14 @@ class DistributionSteps(Estimador):
                     for valor, ocurrencias in self.db.realizar_consulta(self.consulta_cuenta_ocurrencias)
                     if self.bordes.count(valor < 2)])   # extraido del paper
         return acum / float((self.n_registros**2))      # idem
-        
+
     def es_extremo(self, valor):
         return valor == self.bordes[0] or valor == self.bordes[-1]
 
     def entre_bordes(self, valor):
         # caso A
         return self.bordes.count(valor) == 0
-    
+
     def igual_a_uno_no_extremo(self, valor):
         # caso B1
         return self.bordes.count(valor) == 1 and not self.es_extremo(valor)
@@ -204,7 +204,7 @@ class DistributionSteps(Estimador):
                 return 0
             if valor > self.bordes[-1]:
                 return 1
-            
+
     def ubicar(self, valor):
         limite_inferior = max([limite for limite in self.bordes if limite <= valor])
         return float(self.bordes.index(limite_inferior))    # casteo a float porque se lo va a usar para aritmética flotante

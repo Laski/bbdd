@@ -8,10 +8,10 @@ def creador_uniforme():
   bd.crear_tabla("datos", "c1 integer, c2 integer, c3 integer")
 
   for i in range(10000):
-    i = random.randint(1,100)
-    a = random.randint(1,10)
-    x = random.randint(1,1000)
-    bd.insertar_registro("datos", (i, a, x))
+    x = random.randint(1,100)
+    y = random.randint(1,10)
+    z = random.randint(1,1000)
+    bd.insertar_registro("datos", (x, y, z))
 
 def creador_normal(mu, sigma):
   bd = InterfazBD("normal.sqlite3")
@@ -19,10 +19,10 @@ def creador_normal(mu, sigma):
   bd.crear_tabla("datos", "c1 integer, c2 integer, c3 integer")
 
   for i in range(10000):
-    i = random.gauss(mu, sigma)
-    a = random.randint(1,10)
-    x = random.randint(1,1000)
-    bd.insertar_registro("datos", (i, a, x))
+    x = random.gauss(mu, sigma)
+    y = random.randint(1,10)
+    z = random.randint(1,1000)
+    bd.insertar_registro("datos", (x, y, z))
 
 if __name__ == "__main__":
   creador_uniforme()

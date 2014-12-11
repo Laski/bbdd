@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 import estimators
 from interfazbd import InterfazBD
 
+
 def calcular_performances_intermedias(metodo_testeable, metodo_perfecto, valores_consultas):
     res = []
     for i in valores_consultas:
@@ -38,6 +39,8 @@ def calcular_error(archivo, tipo_estimador, tipo):
             estimador = estimators.ClassicHistogram(archivo, 'datos', 'c', p)
         elif tipo_estimador == "steps":
             estimador = estimators.DistributionSteps(archivo, 'datos', 'c', p)
+        elif tipos_estimadores == "propio":
+            estimador = estimator.EstimadorGrupo(archivo, 'datos', 'c', p)
         perfecto  = estimators.EstimadorPerfecto(archivo, 'datos', 'c', p)
         bd = InterfazBD(archivo)
         if tipo == "equal":
@@ -61,7 +64,7 @@ def graficar(archivo, datos):
 def process():
     distribuciones = ("normal", "uniforme")
     seleccionadores = ("equal", "greater")
-    tipos_estimadores = ("classic", "steps")
+    tipos_estimadores = ("classic", "steps", "propio")
     for distribucion in distribuciones:
         archivo = "datasets/" + distribucion + ".sqlite3"
         for seleccionador in seleccionadores:

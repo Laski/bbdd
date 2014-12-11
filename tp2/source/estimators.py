@@ -216,20 +216,19 @@ class DistributionSteps(Estimador):
 
 class EstimadorGrupo(Estimador):
     def build_struct(self):
-        self.dict_cant_values = dict((x,y) for x, y in self.db.realizar_consulta(self.consulta_cuenta_ocurrencias))
+        self.dict_cant_values = dict((x, y) for x, y in self.db.realizar_consulta(self.consulta_cuenta_ocurrencias))
         values = [self.dict_cant_values.get(k) for k in sorted(self.dict_cant_values.keys())]
         acum = np.cumsum(values)  # hace los acumulados
         self.dict_acum_values = dict(zip(list(sorted(self.dict_cant_values.keys())), list(acum)))
 
-
     def estimate_equal(self, valor):
         if valor in self.dict_cant_values:
-          return float(self.dict_cant_values.get(valor)) / self.n_registros
+          return float(self.dict_cant_values[valor]) / self.n_registros
         return 0
 
     def estimate_greater(self, valor):
         if valor in self.dict_cant_values:
-          return float((self.n_registros - self.dict_acum_values.get(valor))) / self.n_registros
+          return float((self.n_registros - self.dict_acum_values[valor])) / self.n_registros
         return 0
 
 

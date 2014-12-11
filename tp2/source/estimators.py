@@ -18,7 +18,7 @@ def validar(db, tabla, columna):
     for i in range(0, len(tablas), 2):
         if tablas[i] == tabla and columna in nombres_columnas(tablas[i+1]):
             index_columna = nombres_columnas(tablas[i+1]).index(columna)
-            assert 'integer' == tipos_columnas(tablas[i+1])[index_columna], "La columna no es de tipo entero"
+            assert 'int' == tipos_columnas(tablas[i+1])[index_columna], "La columna no es de tipo entero"
             return
     assert False, "La tabla no existe o no tiene la columna especificada"
 

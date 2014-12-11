@@ -1,29 +1,42 @@
 from interfazbd import InterfazBD
 import random
 
+class CreadorDistribucion(object):
+  def __init__(self, n_registros):
+    self.n_registros = n_registros
 
-def creador_uniforme():
-  bd = InterfazBD("uniforme.sqlite3")
-  bd.borrar_tabla("datos")
-  bd.crear_tabla("datos", "c1 integer, c2 integer, c3 integer")
+  def crear(self):
+    bd = InterfazBD(self.nombre + ".sqlite3")
+    bd.borrar_tabla("datos")    # para reiniciarla si ya existia
+    bd.crear_tabla("datos", "c integer")
+    registros = [(self.get_random(),) for i in range(self.n_registros)]
+    bd.insertar_registros("datos", registros)
 
-  for i in range(10000):
-    x = random.randint(1,100)
-    y = random.randint(1,10)
-    z = random.randint(1,1000)
-    bd.insertar_registro("datos", (x, y, z))
+  def get_random(self):
+    raise NotImplementedError
 
-def creador_normal(mu, sigma):
-  bd = InterfazBD("normal.sqlite3")
-  bd.borrar_tabla("datos")
-  bd.crear_tabla("datos", "c1 integer, c2 integer, c3 integer")
 
-  for i in range(10000):
-    x = int(random.gauss(mu, sigma))
-    y = random.randint(1,10)
-    z = random.randint(1,1000)
-    bd.insertar_registro("datos", (x, y, z))
+class CreadorUniforme(CreadorDistribucion):
+  def __init__(self, n_registros=10000, valor_max=1000):
+    super(CreadorUniforme, self).__init__(n_registros)
+    self.nombre = "uniforme"
+    self.valor_max = valor_max
+  
+  def get_random(self):
+    return random.randint(1, self.valor_max)
+
+
+class CreadorNormal(CreadorDistribucion):
+  def __init__(self, n_registros=10000, mu=500, sigma=100):
+    super(CreadorNormal,self).__init__(n_registros)
+    self.nombre = "normal"
+    self.mu = mu
+    self.sigma = sigma
+
+  def get_random(self):
+    return int(random.gauss(self.mu, self.sigma))
+
 
 if __name__ == "__main__":
-  creador_uniforme()
-  creador_normal(50, 15)
+  CreadorUniforme().crear()
+  CreadorNormal().crear()

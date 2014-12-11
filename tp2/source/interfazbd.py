@@ -19,17 +19,18 @@ class InterfazBD:
 		self.conexion.execute(comando) 
 		self.commit()
 
-	def insertar_registro(self, tabla, registro):
+	def insertar_registro(self, tabla, registro, hay_mas=False):
 		# 'tabla' es el nombre de la tabla
 		# 'registro' debe ser una tupla con un elemento por cada columna de la tabla
 		placeholder = "?, "*(len(registro)-1) + "?"
 		comando = "INSERT INTO " + tabla + " VALUES (" + placeholder + ")"
 		self.conexion.execute(comando, registro)
-		self.commit()
+		if not hay_mas:
+			self.commit()
 
 	def insertar_registros(self, tabla, registros):
 		for registro in registros:
-			self.insertar_registro(tabla, registro)
+			self.insertar_registro(tabla, registro, hay_mas=True)
 		self.commit()
 
 	def consultar(self, tablas, columnas, criterios=""):

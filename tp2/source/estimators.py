@@ -198,7 +198,7 @@ class DistributionSteps(Estimador):
             # caso C1
             if valor == self.bordes[0]:
                 return 0
-            if valor == self.bordes[1]:
+            if valor == self.bordes[-1]:
                 return 1 - self.delta/2
         if self.fuera_del_histograma(valor):
             # caso D

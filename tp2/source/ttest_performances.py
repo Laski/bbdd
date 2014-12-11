@@ -57,13 +57,13 @@ def ttest_estimadores(bd, tabla, col, est1, est2):
     #inicializar estimadores        
     est_perfecto = est.EstimadorPerfecto(bd, tabla, col)
     
-    min, max = rango(bd, tabla, col)
+    minimo, maximo = rango(bd, tabla, col)
     
     #calcular performances intermedias
-    perf1_equal = empirico.calcular_performances_intermedias(est1.estimate_equal, est_perfecto.estimate_equal, range(min, max, 10))
-    perf2_equal = empirico.calcular_performances_intermedias(est2.estimate_equal, est_perfecto.estimate_equal, range(min, max, 10))        
-    perf1_greater = empirico.calcular_performances_intermedias(est1.estimate_greater, est_perfecto.estimate_greater, range(min, max, 10))
-    perf2_greater = empirico.calcular_performances_intermedias(est2.estimate_greater, est_perfecto.estimate_greater, range(min, max, 10))
+    perf1_equal = empirico.calcular_performances_intermedias(est1.estimate_equal, est_perfecto.estimate_equal, range(minimo, maximo, 10))
+    perf2_equal = empirico.calcular_performances_intermedias(est2.estimate_equal, est_perfecto.estimate_equal, range(minimo, maximo, 10))        
+    perf1_greater = empirico.calcular_performances_intermedias(est1.estimate_greater, est_perfecto.estimate_greater, range(minimo, maximo, 10))
+    perf2_greater = empirico.calcular_performances_intermedias(est2.estimate_greater, est_perfecto.estimate_greater, range(minimo, maximo, 10))
     
     #hacer el ttest
     _, p_equal = stats.ttest_rel(perf1_equal, perf2_equal)

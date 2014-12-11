@@ -18,7 +18,7 @@ def validar(db, tabla, columna):
     for i in range(0, len(tablas), 2):
         if tablas[i] == tabla and columna in nombres_columnas(tablas[i+1]):
             index_columna = nombres_columnas(tablas[i+1]).index(columna)
-            assert 'int' == tipos_columnas(tablas[i+1])[index_columna], "La columna no es de tipo entero"
+            assert tipos_columnas(tablas[i+1])[index_columna] in ('int', 'integer'), "La columna no es de tipo entero"
             return
     assert False, "La tabla no existe o no tiene la columna especificada"
 
@@ -39,6 +39,7 @@ class Estimador(object):
                                 + self.tabla + " GROUP BY " + self.columna + ")"
         self.consulta_cantidad_tuplas = "SELECT COUNT(" + self.columna + ") FROM " + self.tabla
         self.consulta_cuenta_ocurrencias = "SELECT " + self.columna + ", COUNT(*) FROM " + self.tabla + " GROUP BY " + self.columna
+        self.consulta_cuenta_ocurrencias_personalizada = "SELECT COUNT(" + self.columna + ") FROM " + self.tabla + " WHERE " + self.columna + "%s"
         # valores utiles
         self.n_registros = list(self.db.realizar_consulta(self.consulta_cantidad_tuplas))[0][0]
 
@@ -126,7 +127,7 @@ class DistributionSteps(Estimador):
 
     def entre_bordes(self, valor):
         # caso A
-        return self.bordes.count(valor) == 0
+        return self.bordes.count(valor) == 0 and not self.fuera_del_histograma(valor)
 
     def igual_a_uno_no_extremo(self, valor):
         # caso B1
@@ -206,6 +207,8 @@ class DistributionSteps(Estimador):
                 return 1
 
     def ubicar(self, valor):
+        if valor < self.bordes[0] or valor > self.bordes[-1]:
+            raise IndexError    # el valor está fuera del rango
         limite_inferior = max([limite for limite in self.bordes if limite <= valor])
         return float(self.bordes.index(limite_inferior))    # casteo a float porque se lo va a usar para aritmética flotante
 
@@ -227,15 +230,11 @@ class EstimadorPerfecto(Estimador):
         pass
 
     def estimate_equal(self, valor):
-        for v, ocurrencias in self.db.realizar_consulta(self.consulta_cuenta_ocurrencias):
-            if v == valor:
-                break
-        # 'ocurrencias' tiene la cantidad de ocurrencias del valor
+        consulta = self.consulta_cuenta_ocurrencias_personalizada % ("=" + str(valor))
+        ((ocurrencias, ), ) = self.db.realizar_consulta(consulta)
         return float(ocurrencias) / self.n_registros
 
     def estimate_greater(self, valor):
-        n_mayores = 0
-        for (v, ) in self.db.realizar_consulta(self.consulta_desordenada):
-            if v > valor:
-                n_mayores += 1
+        consulta = self.consulta_cuenta_ocurrencias_personalizada % (">" + str(valor))
+        ((n_mayores, ), ) = self.db.realizar_consulta(consulta)
         return float(n_mayores) / self.n_registros

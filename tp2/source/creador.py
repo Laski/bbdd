@@ -6,7 +6,7 @@ class CreadorDistribucion(object):
     self.n_registros = n_registros
 
   def crear(self):
-    bd = InterfazBD(self.nombre + ".sqlite3")
+    bd = InterfazBD("datasets/" + self.nombre + ".sqlite3")
     bd.borrar_tabla("datos")    # para reiniciarla si ya existia
     bd.crear_tabla("datos", "c integer")
     registros = [(self.get_random(),) for i in range(self.n_registros)]

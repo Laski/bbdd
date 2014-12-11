@@ -23,69 +23,57 @@ import os.path
 #       inputfile = arg
 #   process(inputfile)
 
-def process(archivo):
-  #por equal
-  print "EQUAL"
-  errorClassic = []
-  errorStep = []
-  for p in (20, 40, 60, 80, 100):
-    aEstimator = estimators.ClassicHistogram(archivo, 'datos', 'c1', p)
-    bEstimator = estimators.DistributionSteps(archivo, 'datos', 'c1', p)
-    bd = InterfazBD(archivo)
-    errorA = 0
-    errorB = 0
-    for i in range(1,101):
-      consulta = "select count(c1) from datos where c1=%d" %(i)
-      real = bd.realizar_consulta(consulta).fetchone()[0]/float(10000)
-      estimadoA = aEstimator.estimate_equal(i)
-      estimadoB = bEstimator.estimate_equal(i)
-      errorA = errorA + abs(real - estimadoA)
-      errorB = errorB + abs(real - estimadoB)
-    totalA = errorA / 100
-    totalB = errorB / 100
-    errorClassic.append((p,totalA))
-    errorStep.append((p,totalB))
-  salida = archivo + ".equalClassic.txt"
-  archivoSalida = open(salida, 'w')
-  for item in errorClassic:
-    print>>archivoSalida, item
-  salida = archivo + ".equalStep.txt"
-  archivoSalida = open(salida, 'w')
-  for item in errorStep:
-    print>>archivoSalida, item
 
-  #Por greater
-  print "GREATER"
-  errorClassic = []
-  errorStep = []
+def calcular_performances_intermedias(metodo_testeable, metodo_perfecto, valores_consultas):
+  res = []
+  for i in valores_consultas:
+    real = metodo_perfecto(i)
+    estimado = metodo_testeable(i)
+    res.append(abs(real - estimado))
+  return res
+
+def calcular_performance_global(metodo_testeable, metodo_perfecto):
+  valores_consultas = range(1, 1000, 10)
+  performances_intermedias = calcular_performances_intermedias(metodo_testeable, metodo_perfecto, valores_consultas)
+  return sum(performances_intermedias) / len(valores_consultas)
+
+def output(archivo, datos):
+  with open(archivo, 'w') as f:
+    for item in datos:
+      print>>f, item
+
+
+
+def calcular_error(archivo, tipo):
+  # 'tipo' debe ser "equal" o "greater"
+  print tipo.upper()
+  erroresClassic = []
+  erroresStep = []
   for p in (20, 40, 60, 80, 100):
-    aEstimator = estimators.ClassicHistogram(archivo, 'datos', 'c1', p)
-    bEstimator = estimators.DistributionSteps(archivo, 'datos', 'c1', p)
+    classicEstimator = estimators.ClassicHistogram(archivo,  'datos', 'c', p)
+    stepEstimator    = estimators.DistributionSteps(archivo, 'datos', 'c', p)
+    perfectEstimator = estimators.EstimadorPerfecto(archivo, 'datos', 'c', p)
     bd = InterfazBD(archivo)
-    errorA = 0
-    errorB = 0
-    for i in range(1,101):
-      consulta = "select count(c1) from datos where c1>%d" %(i)
-      real = bd.realizar_consulta(consulta).fetchone()[0]/float(10000)
-      estimadoA = aEstimator.estimate_greater(i)
-      estimadoB = bEstimator.estimate_greater(i)
-      errorA = errorA + abs(real - estimadoA)
-      errorB = errorB + abs(real - estimadoB)
-    totalA = errorA / 100
-    totalB = errorB / 100
-    errorClassic.append((p,totalA))
-    errorStep.append((p,totalB))
-  salida = archivo + ".greatClassic.txt"
-  archivoSalida = open(salida, 'w')
-  for item in errorClassic:
-    print>>archivoSalida, item
-  salida = archivo + ".greatStep.txt"
-  archivoSalida = open(salida, 'w')
-  for item in errorStep:
-    print>>archivoSalida, item
+    if tipo == "equal":
+      errorClassic = calcular_performance_global(classicEstimator.estimate_equal, perfectEstimator.estimate_equal)
+      errorStep    = calcular_performance_global(stepEstimator.estimate_equal,    perfectEstimator.estimate_equal)
+    elif tipo == "greater":
+      errorClassic = calcular_performance_global(classicEstimator.estimate_greater, perfectEstimator.estimate_greater)
+      errorStep    = calcular_performance_global(stepEstimator.estimate_greater,    perfectEstimator.estimate_greater)
+    erroresClassic.append((p, errorClassic))
+    erroresStep.append(   (p, errorStep))
+  salidaClassic = archivo + "." + tipo + "Classic.txt"
+  salidaStep = archivo + "." + tipo + "Step.txt"
+  output(salidaClassic, erroresClassic)
+  output(salidaStep, erroresStep)
+  
+
+def process(archivo):
+  calcular_error(archivo, "equal")
+  calcular_error(archivo, "greater")
 
 
 if __name__ == "__main__":
   #  main(sys.argv[1:])
-  process("normal.sqlite3")
-  process("uniforme.sqlite3")
+  process("datasets/normal.sqlite3")
+  process("datasets/uniforme.sqlite3")

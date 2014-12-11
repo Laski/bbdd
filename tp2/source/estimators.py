@@ -215,13 +215,14 @@ class DistributionSteps(Estimador):
 
 
 class EstimadorGrupo(Estimador):
+    # usa el parametro para hacer un cache con ese tamaño
     def build_struct(self):
         self.dict_cant_values = dict((x, y) for x, y in self.db.realizar_consulta(self.consulta_cuenta_ocurrencias))
         values = [self.dict_cant_values.get(k) for k in sorted(self.dict_cant_values.keys())]
         acum = np.cumsum(values)  # hace los acumulados
         self.dict_acum_values = dict(zip(list(sorted(self.dict_cant_values.keys())), list(acum)))
         consulta_cache = "SELECT " + self.columna + ", COUNT(*) FROM " + self.tabla + " GROUP BY " + self.columna + " ORDER BY COUNT(*) DESC"
-        self.dict_cache = dict((x, y) for x, y in [x for x in self.db.realizar_consulta(consulta_cache)][:self.parametro])
+        self.dict_cache = dict((x, y) for x, y in [x for x in self.db.realizar_consulta(consulta_cache)][:self.parametro])  # cache de tamaño self.parametro
 
     def estimate_equal(self, valor):
         if valor in self.dict_cache:

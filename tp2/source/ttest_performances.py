@@ -5,20 +5,23 @@ import estimators as est
 import empirico
 from scipy import stats
 
+
 def graficar_dataset(nombre_bd, tabla, columna):
-	plt.clf()
-	bd = InterfazBD(nombre_bd)
-	values = list(bd.consultar(tabla, columna, ""))
-	values = [v for (v,) in values]
-	plt.hist(values, 200)
-	plt.ylabel("Valor")
-	plt.xlabel("Cantidad" + " (" + nombre_bd + " - " + tabla + " - " + columna + ")")
-	archivo = "datasets/img/" + columna + ".png"
-	plt.savefig(archivo)
+    plt.clf()
+    bd = InterfazBD(nombre_bd)
+    values = list(bd.consultar(tabla, columna, ""))
+    values = [v for (v,) in values]
+    plt.hist(values, 200)
+    plt.ylabel("Valor")
+    plt.xlabel("Cantidad" + " (" + nombre_bd + " - " + tabla + " - " + columna + ")")
+    archivo = "datasets/img/" + columna + ".png"
+    plt.savefig(archivo)
+
 
 def graficar_datasets_catedra():
     for i in range(0,10):
         graficar_dataset("datasets/db.sqlite3", "table1", "c"+str(i))
+
 
 def rango(nombre_bd, tabla, columna):
     bd = InterfazBD(nombre_bd)
@@ -26,17 +29,20 @@ def rango(nombre_bd, tabla, columna):
     minimo = list(bd.realizar_consulta(consulta_min_max % "MIN"))[0][0]
     maximo = list(bd.realizar_consulta(consulta_min_max % "MAX"))[0][0]
     return minimo, maximo
+
     
-def diferencias_performance():
-    bd = "db.sqlite3"
+def diferencias_performance(tipo1, tipo2):
+    print("#########################")
+    print(tipo1.title() + " vs " + tipo2.title())
+    bd = "datasets/db.sqlite3"
     tabla = "table1"
     res = []
     for i in range(0,10):
         col = "c"+str(i)
         print col
         
-        est1 = est.ClassicHistogram(bd, tabla, col)
-        est2 = est.DistributionSteps(bd, tabla, col)
+        est1 = get_estimator(tipo1, bd, tabla, col)
+        est2 = get_estimator(tipo2, bd, tabla, col)
         est_perfecto = est.EstimadorPerfecto(bd, tabla, col)
         
         perf1_equal = empirico.calcular_performance_global(est1.estimate_equal, est_perfecto.estimate_equal)
@@ -49,11 +55,21 @@ def diferencias_performance():
         print "est2 equal: ", perf2_equal
         print "est1 greater: ", perf1_greater
         print "est2 greater: ", perf2_greater
-        print "p-valor equal:", p_equal
-        print "p-valor equal:", p_greater    
+        print "p-valor equal:", p_equal, "(SIGNIFICATIVO)" if p_equal < 0.05 else "(NO SIGNIFICATIVO)"
+        print "p-valor greater:", p_greater, "(SIGNIFICATIVO)" if p_greater < 0.05 else "(NO SIGNIFICATIVO)"
+    print
+
+
+def get_estimator(tipo, bd, tabla, col):
+    if tipo == "classic":
+        return est.ClassicHistogram(bd, tabla, col)
+    elif tipo == "steps":
+        return est.DistributionSteps(bd, tabla, col)
+    elif tipo == "propio":
+        return est.EstimadorGrupo(bd, tabla, col)
+
 
 def ttest_estimadores(bd, tabla, col, est1, est2):
-    
     #inicializar estimadores        
     est_perfecto = est.EstimadorPerfecto(bd, tabla, col)
     
@@ -73,5 +89,7 @@ def ttest_estimadores(bd, tabla, col, est1, est2):
 
 
 if __name__ == "__main__":
-	graficar_datasets_catedra()
-	diferencias_performance()
+    graficar_datasets_catedra()
+    diferencias_performance("classic", "steps")
+    diferencias_performance("classic", "propio")
+    diferencias_performance("steps", "propio")

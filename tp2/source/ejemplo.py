@@ -35,25 +35,25 @@ print
 print "CON UNA BASE PROPIA PARA PROBAR NUESTRO ESTIMADOR"
 print
 # ClassicHistogram
-aEstimator = estimators.ClassicHistogram('datasets/raro.sqlite3', 'datos', 'c', parametro=20)
+aEstimator = estimators.ClassicHistogram('datasets/esparso.sqlite3', 'datos', 'c', parametro=20)
 print "ClassicHistogram"
 print "  Sel(=%d) : %3.2f" % (16, aEstimator.estimate_equal(16))
 print "  Sel(>%d) : %3.2f" % (400, aEstimator.estimate_greater(400))
 
 # DistributionSteps
-aEstimator = estimators.DistributionSteps('datasets/raro.sqlite3', 'datos', 'c', parametro=20)
+aEstimator = estimators.DistributionSteps('datasets/esparso.sqlite3', 'datos', 'c', parametro=20)
 print "DistributionSteps"
 print "  Sel(=%d) : %3.2f" % (16, aEstimator.estimate_equal(16))
 print "  Sel(>%d) : %3.2f" % (400, aEstimator.estimate_greater(400))
 
 #Grupo
-aEstimator = estimators.EstimadorGrupo('datasets/raro.sqlite3', 'datos', 'c', parametro=20)
+aEstimator = estimators.EstimadorGrupo('datasets/esparso.sqlite3', 'datos', 'c', parametro=20)
 print "Estimador Grupo"
 print "  Sel(=%d) : %3.2f" % (16, aEstimator.estimate_equal(16))
 print "  Sel(>%d) : %3.2f" % (400, aEstimator.estimate_greater(400))
 
 # Perfecto
-aEstimator = estimators.EstimadorPerfecto('datasets/raro.sqlite3', 'datos', 'c', parametro=20)
+aEstimator = estimators.EstimadorPerfecto('datasets/esparso.sqlite3', 'datos', 'c', parametro=20)
 print "EstimadorPerfecto"
 print "  Sel(=%d) : %3.2f" % (16, aEstimator.estimate_equal(16))
 print "  Sel(>%d) : %3.2f" % (400, aEstimator.estimate_greater(400))

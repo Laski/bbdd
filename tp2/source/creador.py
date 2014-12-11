@@ -37,11 +37,11 @@ class CreadorNormal(CreadorDistribucion):
         return int(random.gauss(self.mu, self.sigma))
 
 
-class CreadorRaro(CreadorDistribucion):
+class CreadorEsparso(CreadorDistribucion):
     # crea la distribucion con muy pocos valores, muy repetidos
     def __init__(self, n_registros=10000):
-        super(CreadorRaro,self).__init__(n_registros)
-        self.nombre = "raro"
+        super(CreadorEsparso,self).__init__(n_registros)
+        self.nombre = "esparso"
 
     def get_random(self):
         items = [1,1,1,1,400,400,400,132,16,16,1034,1034,1034,1034,1034,503,503,503,503,503,503]
@@ -51,4 +51,4 @@ class CreadorRaro(CreadorDistribucion):
 if __name__ == "__main__":
     CreadorUniforme().crear()
     CreadorNormal().crear()
-    CreadorRaro().crear()
+    CreadorEsparso().crear()

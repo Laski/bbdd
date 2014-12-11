@@ -33,22 +33,22 @@ print '########################'
 aEstimator = estimators.ClassicHistogram('raro.sqlite3', 'datos', 'c', parametro=20)
 print "ClassicHistogram"
 print "  Sel(=%d) : %3.2f" % (16, aEstimator.estimate_equal(16))
-print "  Sel(>%d) : %3.2f" % (1034, aEstimator.estimate_greater(1034))
+print "  Sel(>%d) : %3.2f" % (400, aEstimator.estimate_greater(400))
 
 # DistributionSteps
 aEstimator = estimators.DistributionSteps('raro.sqlite3', 'datos', 'c', parametro=20)
 print "DistributionSteps"
 print "  Sel(=%d) : %3.2f" % (16, aEstimator.estimate_equal(16))
-print "  Sel(>%d) : %3.2f" % (1034, aEstimator.estimate_greater(1034))
+print "  Sel(>%d) : %3.2f" % (400, aEstimator.estimate_greater(400))
 
 #Grupo
 aEstimator = estimators.EstimadorGrupo('raro.sqlite3', 'datos', 'c', parametro=20)
 print "Estimador Grupo"
 print "  Sel(=%d) : %3.2f" % (16, aEstimator.estimate_equal(16))
-print "  Sel(>%d) : %3.2f" % (1034, aEstimator.estimate_greater(1034))
+print "  Sel(>%d) : %3.2f" % (400, aEstimator.estimate_greater(400))
 
 # Perfecto
 aEstimator = estimators.EstimadorPerfecto('raro.sqlite3', 'datos', 'c', parametro=20)
 print "EstimadorPerfecto"
 print "  Sel(=%d) : %3.2f" % (16, aEstimator.estimate_equal(16))
-print "  Sel(>%d) : %3.2f" % (1034, aEstimator.estimate_greater(1034))
+print "  Sel(>%d) : %3.2f" % (400, aEstimator.estimate_greater(400))

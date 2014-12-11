@@ -217,8 +217,9 @@ class DistributionSteps(Estimador):
 class EstimadorGrupo(Estimador):
     def build_struct(self):
         self.dict_cant_values = dict((x,y) for x, y in self.db.realizar_consulta(self.consulta_cuenta_ocurrencias))
-        acum = np.cumsum(self.dict_cant_values.values())  # returns a numpy.ndarray
-        self.dict_acum_values = dict(zip(list(self.dict_cant_values.keys()), list(acum)))
+        values = [self.dict_cant_values.get(k) for k in sorted(self.dict_cant_values.keys())]
+        acum = np.cumsum(values)  # hace los acumulados
+        self.dict_acum_values = dict(zip(list(sorted(self.dict_cant_values.keys())), list(acum)))
 
 
     def estimate_equal(self, valor):

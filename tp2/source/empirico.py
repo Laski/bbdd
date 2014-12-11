@@ -19,7 +19,9 @@ def calcular_performance_global(metodo_testeable, metodo_perfecto):
     performances_intermedias = calcular_performances_intermedias(metodo_testeable, metodo_perfecto, valores_consultas)
     return sum(performances_intermedias) / len(valores_consultas)
 
+
 def getxy(datos):
+    # transforma un diccionario en dos arreglos key, value
     x = []
     y = []
     for p in sorted(datos.keys()):
@@ -31,7 +33,7 @@ def getxy(datos):
 def calcular_error(archivo, tipo_estimador, tipo):
     # 'tipo' debe ser "equal" o "greater"
     errores = {}   # diccionario 'p' -> error medio
-    for p in (20, 40, 60, 80, 100):
+    for p in range(10, 200, 10):
         if tipo_estimador == "classic":
             estimador = estimators.ClassicHistogram(archivo, 'datos', 'c', p)
         elif tipo_estimador == "steps":
@@ -50,6 +52,8 @@ def graficar(archivo, datos):
     for tipo_estimador in datos:
         x, y = getxy(datos[tipo_estimador])
         plt.errorbar(x, y, label=tipo_estimador.title())
+    plt.xlabel("Parametro p")
+    plt.ylabel("Error medio")
     plt.legend()
     plt.savefig(archivo)
 

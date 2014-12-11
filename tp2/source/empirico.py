@@ -19,17 +19,14 @@ def calcular_performance_global(metodo_testeable, metodo_perfecto):
     performances_intermedias = calcular_performances_intermedias(metodo_testeable, metodo_perfecto, valores_consultas)
     return sum(performances_intermedias) / len(valores_consultas)
 
-
-def graficar(archivo, datos):
-    plt.clf()
+def getxy(datos):
     x = []
     y = []
     for p in sorted(datos.keys()):
         x.append(p)
         y.append(datos[p])
-    plt.errorbar(x, y)
-    plt.savefig(archivo)
-
+    return x, y
+    
 
 def calcular_error(archivo, tipo_estimador, tipo):
     # 'tipo' debe ser "equal" o "greater"
@@ -48,17 +45,28 @@ def calcular_error(archivo, tipo_estimador, tipo):
     return errores
 
 
+def graficar(archivo, datos):
+    plt.clf()
+    for tipo_estimador in datos:
+        x, y = getxy(datos[tipo_estimador])
+        plt.errorbar(x, y, label=tipo_estimador.title())
+    plt.legend()
+    plt.savefig(archivo)
+
+
 def process():
-    tipo_estimadores = ("classic", "steps")
-    seleccionadores = ("equal", "greater")
     distribuciones = ("normal", "uniforme")
+    seleccionadores = ("equal", "greater")
+    tipos_estimadores = ("classic", "steps")
     for distribucion in distribuciones:
         archivo = "datasets/" + distribucion + ".sqlite3"
         for seleccionador in seleccionadores:
-            for tipo_estimador in tipo_estimadores:
-                performance = calcular_error(archivo, tipo_estimador, seleccionador)
-                grafico = "datasets/img/" + distribucion + tipo_estimador.title() + seleccionador.title() + ".png"
-                graficar(grafico, performance)
+            performance = {}
+            for tipo_estimador in tipos_estimadores:
+                performance[tipo_estimador] = calcular_error(archivo, tipo_estimador, seleccionador)
+            grafico = "datasets/img/" + distribucion + seleccionador.title() + ".png"
+            graficar(grafico, performance)
+            plt.clf()
 
 
 if __name__ == "__main__":

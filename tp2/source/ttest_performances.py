@@ -6,15 +6,15 @@ import empirico
 from scipy import stats
 
 def graficar_dataset(nombre_bd, tabla, columna):
-    bd = InterfazBD(nombre_bd)
-    values = list(bd.consultar(tabla, columna, ""))
-    values = [v for (v,) in values]
-    plt.hist(values, 200)
-    #x, y = dame_distribucion(nombre_bd, tabla, columna)
-    #plt.plot(x, y, ".")
-    plt.ylabel("valor")
-    plt.xlabel("cantidad" + " (" + nombre_bd + " - " + tabla + " - " + columna + ")")
-    plt.show()
+	plt.clf()
+	bd = InterfazBD(nombre_bd)
+	values = list(bd.consultar(tabla, columna, ""))
+	values = [v for (v,) in values]
+	plt.hist(values, 200)
+	plt.ylabel("Valor")
+	plt.xlabel("Cantidad" + " (" + nombre_bd + " - " + tabla + " - " + columna + ")")
+	archivo = "datasets/img/" + columna + ".png"
+	plt.savefig(archivo)
 
 def graficar_datasets_catedra():
     for i in range(0,10):
@@ -71,5 +71,7 @@ def ttest_estimadores(bd, tabla, col, est1, est2):
     
     return p_equal, p_greater
 
-#graficar_datasets_catedra()
-diferencias_performance()
+
+if __name__ == "__main__":
+	graficar_datasets_catedra()
+	diferencias_performance()

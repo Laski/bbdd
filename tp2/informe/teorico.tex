@@ -4,6 +4,15 @@ En esta sección realizamos un análsis teórico sobre la performance de los dif
 \subsection{Performance en distribuciones uniformes}
 Para responder la pregunta de qué estimador debe exhibir mejor performance en un dataset con distribución uniforme, hace falta primero analizar con detenimiento este tipo de distribución. La distribución uniforme ``reparte'' los elementos en el rango disponible de forma equitativa: todos los enteros tienen la misma probabilidad de ocurrir.
 
+Es decir, la forma de un histograma clásico de la distribución tendrá todas las barras del mismo ancho (por invariante de construcción del histograma) y de la misma altura, pues todos los rangos de idéntico ancho tienen aproximadamente la misma cantidad de elementos.
+
+A su vez, la forma de un histograma de Distribution Steps tendrá todas las barras de la misma altura (por invariante de construcción del histograma) y del mismo ancho, pues la cantidad de elementos que resulta ser menor a un cierto porcentaje de los demás está relacionado directamente con ese porcentaje. Dicho en otras palabras, suponiendo un histograma de 10 barras, las barras tendrán un ancho aproximado al 10\% del rango de la distribución, pues eso mantiene la condición (de Distribution Steps) de que el límite derecho de la barra i deja a su izquierda 10i\% de los elementos (ver la sección de Estimadores para más información).
+
+Entonces concluimos que, para un mismo parámetro (cantidad de barras) ambas distribuciones ``dibujarán'' prácticamente el mismo histograma. Esto podría inducir a pensar que la respuesta podría ser similar y que por lo tanto la performance será la misma, pero estaríamos olvidando que ``usan'' esos histogramas de maneras distintas.
+
+Para las consultas por igualdad el histograma clásico computa la probabilidad dividiendo la altura de la barra en la que cae el número consultado por la cantidad de elementos totales. De este modo, si la cantidad de barras es 20, una distribución uniforme producirá una respuesta del 20\%
+
+
 
 En esta situación tanto el estimador basado en histograma clásico como el basado en Distribution Steps deberían exhibir la misma performance cuando son construidos con los mismos parámetros (cantidad de buckets y cantidad de steps respectivamente). Esto se debe, esencialmente, a que en el histograma de un distribución uniforme la cantidad de elementos que caen en cada bucket es, en términos probabilísticos, la misma. Esto quiere decir que los buckets no solo comparten la longitud sino que, en este caso, tienen la misma altura. Los steps del segundo estimador están distribuidos de tal manera que en cada intervalo se encuentra la misma cantidad de elementos, pero entonces por lo que vimos anteriormente, en el caso de la distribución uniforme coinciden con los buckets del histograma. Por lo tanto los estimadores no son significativamente diferentes.
 

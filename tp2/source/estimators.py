@@ -117,10 +117,11 @@ class DistributionSteps(Estimador):
         self.delta = min(0.5/self.parametro, self.get_density())   # extraido del paper
 
     def get_density(self):
+        # algoritmo extraido del paper
         acum = sum([ocurrencias**2
                     for valor, ocurrencias in self.db.realizar_consulta(self.consulta_cuenta_ocurrencias)
-                    if self.bordes.count(valor < 2)])   # extraido del paper
-        return acum / float((self.n_registros**2))      # idem
+                    if self.bordes.count(valor < 2)])
+        return acum / float((self.n_registros**2))
 
     def es_extremo(self, valor):
         return valor == self.bordes[0] or valor == self.bordes[-1]

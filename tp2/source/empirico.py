@@ -39,8 +39,8 @@ def calcular_error(archivo, tipo_estimador, tipo):
             estimador = estimators.ClassicHistogram(archivo, 'datos', 'c', p)
         elif tipo_estimador == "steps":
             estimador = estimators.DistributionSteps(archivo, 'datos', 'c', p)
-        elif tipos_estimadores == "propio":
-            estimador = estimator.EstimadorGrupo(archivo, 'datos', 'c', p)
+        elif tipo_estimador == "propio":
+            estimador = estimators.EstimadorGrupo(archivo, 'datos', 'c', p)
         perfecto  = estimators.EstimadorPerfecto(archivo, 'datos', 'c', p)
         bd = InterfazBD(archivo)
         if tipo == "equal":

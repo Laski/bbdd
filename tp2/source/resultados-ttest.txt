@@ -1,0 +1,219 @@
+#########################
+Classic vs Steps
+c0
+est1 equal:  0.098892
+est2 equal:  7.7764152e-05
+est1 greater:  0.0250411
+est2 greater:  0.023573264152
+p-valor equal: 6.62964391091e-190 (SIGNIFICATIVO)
+p-valor greater: 0.0479167534818 (SIGNIFICATIVO)
+c1
+est1 equal:  0.0985446
+est2 equal:  0.001194748316
+est1 greater:  0.0258566
+est2 greater:  0.0248666
+p-valor equal: 3.45214314108e-19 (SIGNIFICATIVO)
+p-valor greater: 0.665315182322 (NO SIGNIFICATIVO)
+c2
+est1 equal:  0.017196
+est2 equal:  0.0009965
+est1 greater:  0.00484445
+est2 greater:  0.0056128
+p-valor equal: 0.00352519207531 (SIGNIFICATIVO)
+p-valor greater: 0.727731620609 (NO SIGNIFICATIVO)
+c3
+est1 equal:  0.2935813
+est2 equal:  0.000336
+est1 greater:  0.08017355
+est2 greater:  0.0247227
+p-valor equal: 3.14561901773e-104 (SIGNIFICATIVO)
+p-valor greater: 2.29868712143e-09 (SIGNIFICATIVO)
+c4
+est1 equal:  0.1701665
+est2 equal:  0.0005667
+est1 greater:  0.0433473
+est2 greater:  0.0208723
+p-valor equal: 4.90102829966e-60 (SIGNIFICATIVO)
+p-valor greater: 0.0320860225029 (SIGNIFICATIVO)
+c5
+est1 equal:  0.170222
+est2 equal:  0.0009819
+est1 greater:  0.04246855
+est2 greater:  0.0258885
+p-valor equal: 1.14667831624e-25 (SIGNIFICATIVO)
+p-valor greater: 0.00260810762535 (SIGNIFICATIVO)
+c6
+est1 equal:  0.0975596
+est2 equal:  0.0009305
+est1 greater:  0.03361095
+est2 greater:  0.0336189
+p-valor equal: 3.43204868903e-140 (SIGNIFICATIVO)
+p-valor greater: 0.0199447281195 (SIGNIFICATIVO)
+c7
+est1 equal:  0.040487
+est2 equal:  0.0010018
+est1 greater:  0.0105099
+est2 greater:  0.0120381
+p-valor equal: 1.31063316234e-14 (SIGNIFICATIVO)
+p-valor greater: 0.415316158292 (NO SIGNIFICATIVO)
+c8
+est1 equal:  0.0386509
+est2 equal:  0.003070192672
+est1 greater:  0.01002815
+est2 greater:  0.013036052519
+p-valor equal: 0.00556485771502 (SIGNIFICATIVO)
+p-valor greater: 0.461258866777 (NO SIGNIFICATIVO)
+c9
+est1 equal:  0.1858521
+est2 equal:  0.006901847648
+est1 greater:  0.05839255
+est2 greater:  0.026351993652
+p-valor equal: 2.62958583509e-19 (SIGNIFICATIVO)
+p-valor greater: 0.460077621674 (NO SIGNIFICATIVO)
+
+#########################
+Classic vs Propio
+c0
+est1 equal:  0.098892
+est2 equal:  0.0
+est1 greater:  0.0250411
+est2 greater:  0.0
+p-valor equal: 1.54642898433e-190 (SIGNIFICATIVO)
+p-valor greater: 6.10845094615e-31 (SIGNIFICATIVO)
+c1
+est1 equal:  0.0985446
+est2 equal:  0.0
+est1 greater:  0.0258566
+est2 greater:  0.0
+p-valor equal: 1.59197051888e-19 (SIGNIFICATIVO)
+p-valor greater: 4.30610853109e-13 (SIGNIFICATIVO)
+c2
+est1 equal:  0.017196
+est2 equal:  0.0
+est1 greater:  0.00484445
+est2 greater:  0.12
+p-valor equal: 0.00351336663312 (SIGNIFICATIVO)
+p-valor greater: 0.627366386204 (NO SIGNIFICATIVO)
+c3
+est1 equal:  0.2935813
+est2 equal:  0.0
+est1 greater:  0.08017355
+est2 greater:  0.0
+p-valor equal: 3.1486290689e-104 (SIGNIFICATIVO)
+p-valor greater: 2.08034972206e-31 (SIGNIFICATIVO)
+c4
+est1 equal:  0.1701665
+est2 equal:  0.0
+est1 greater:  0.0433473
+est2 greater:  0.0
+p-valor equal: 4.94027380419e-60 (SIGNIFICATIVO)
+p-valor greater: 5.12868185865e-05 (SIGNIFICATIVO)
+c5
+est1 equal:  0.170222
+est2 equal:  0.0
+est1 greater:  0.04246855
+est2 greater:  0.0
+p-valor equal: 1.15304089787e-25 (SIGNIFICATIVO)
+p-valor greater: 0.000279225605199 (SIGNIFICATIVO)
+c6
+est1 equal:  0.0975596
+est2 equal:  0.0
+est1 greater:  0.03361095
+est2 greater:  0.0399996
+p-valor equal: 1.77698051696e-141 (SIGNIFICATIVO)
+p-valor greater: 0.244299876608 (NO SIGNIFICATIVO)
+c7
+est1 equal:  0.040487
+est2 equal:  0.0
+est1 greater:  0.0105099
+est2 greater:  0.16
+p-valor equal: 1.26981403824e-14 (SIGNIFICATIVO)
+p-valor greater: 1.23726462147e-09 (SIGNIFICATIVO)
+c8
+est1 equal:  0.0386509
+est2 equal:  0.0
+est1 greater:  0.01002815
+est2 greater:  4.3e-06
+p-valor equal: 0.00262332179868 (SIGNIFICATIVO)
+p-valor greater: 0.0104895488506 (SIGNIFICATIVO)
+c9
+est1 equal:  0.1858521
+est2 equal:  0.0
+est1 greater:  0.05839255
+est2 greater:  0.0
+p-valor equal: 8.40948690587e-22 (SIGNIFICATIVO)
+p-valor greater: 1.37370766171e-14 (SIGNIFICATIVO)
+
+#########################
+Steps vs Propio
+c0
+est1 equal:  7.7764152e-05
+est2 equal:  0.0
+est1 greater:  0.023573264152
+est2 greater:  0.0
+p-valor equal: 1.9976648544e-21 (SIGNIFICATIVO)
+p-valor greater: 1.06443622123e-28 (SIGNIFICATIVO)
+c1
+est1 equal:  0.001194748316
+est2 equal:  0.0
+est1 greater:  0.0248666
+est2 greater:  0.0
+p-valor equal: 2.77531400486e-40 (SIGNIFICATIVO)
+p-valor greater: 5.50752268623e-30 (SIGNIFICATIVO)
+c2
+est1 equal:  0.0009965
+est2 equal:  0.0
+est1 greater:  0.0056128
+est2 greater:  0.12
+p-valor equal: 0.00405024139026 (SIGNIFICATIVO)
+p-valor greater: 0.661010114439 (NO SIGNIFICATIVO)
+c3
+est1 equal:  0.000336
+est2 equal:  0.0
+est1 greater:  0.0247227
+est2 greater:  0.0
+p-valor equal: 1.97248816633e-95 (SIGNIFICATIVO)
+p-valor greater: 7.18043815819e-31 (SIGNIFICATIVO)
+c4
+est1 equal:  0.0005667
+est2 equal:  0.0
+est1 greater:  0.0208723
+est2 greater:  0.0
+p-valor equal: 5.97582947263e-53 (SIGNIFICATIVO)
+p-valor greater: 6.59481096978e-05 (SIGNIFICATIVO)
+c5
+est1 equal:  0.0009819
+est2 equal:  0.0
+est1 greater:  0.0258885
+est2 greater:  0.0
+p-valor equal: 7.75203210914e-23 (SIGNIFICATIVO)
+p-valor greater: 0.000666858961637 (SIGNIFICATIVO)
+c6
+est1 equal:  0.0009305
+est2 equal:  0.0
+est1 greater:  0.0336189
+est2 greater:  0.0399996
+p-valor equal: 1.00295020056e-26 (SIGNIFICATIVO)
+p-valor greater: 0.337503262618 (NO SIGNIFICATIVO)
+c7
+est1 equal:  0.0010018
+est2 equal:  0.0
+est1 greater:  0.0120381
+est2 greater:  0.16
+p-valor equal: 1.58614769031e-14 (SIGNIFICATIVO)
+p-valor greater: 1.86764147891e-14 (SIGNIFICATIVO)
+c8
+est1 equal:  0.003070192672
+est2 equal:  0.0
+est1 greater:  0.013036052519
+est2 greater:  4.3e-06
+p-valor equal: 8.33437878751e-16 (SIGNIFICATIVO)
+p-valor greater: 1.65552871612e-17 (SIGNIFICATIVO)
+c9
+est1 equal:  0.006901847648
+est2 equal:  0.0
+est1 greater:  0.026351993652
+est2 greater:  0.0
+p-valor equal: 1.42944193584e-301 (SIGNIFICATIVO)
+p-valor greater: 2.92650032147e-114 (SIGNIFICATIVO)
+

@@ -1,1 +1,47 @@
 \section{Análisis empírico}
+
+\subsection{Performance para diferentes distribuciones}
+En esta sección calculamos la performance de los estimadores en datasets de diferentes distribuciones provistas por la cátedra y análizamos, en cada caso, mediante un test de hipótesis, si alguno de los estimadores es significativamente mejor o si, en términos estadísticos, no existe una diferencia importante de performance. 
+El test utilizado es el \textit{Student’s T-Test Apareado} y para realizarlo necesitamos tener dos conjuntos de datos emparentados que representen la información que queremos comparar. En nuestro caso, para comparar el estimador $A$ con el estimador $B$ en cierto dataset, calculamos por un lado la performance de $A$ para estimar valores individuales del dataset y, por otro lado, la performance de $B$ para estimar esos mismos valores. Esto nos da dos listas de datos que están emparentadas por los valores que se estan estimando. Los valores a estimar cubren todo el rango de valores del dataset en intervalos de 10 unidades. Era necesario calcular la performance individual para diferentes valores del dataset y no simplemente tomar la performance como el promedio de todos esos valores ya que el valor promedio no es suficiente información para llevar adelante un test de hipótesis de estas características.
+
+Presentamos a continuación los gráficos de los datasets utilizados:
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.45\textwidth]{./images/c0}
+  \includegraphics[width=0.45\textwidth]{./images/c1}
+  \caption{Gráficos de los datasets de las columnas c0 y c1}
+ \end{figure}
+ 
+ 
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.45\textwidth]{./images/c2}
+  \includegraphics[width=0.45\textwidth]{./images/c3}
+  \caption{Gráficos de los datasets de las columnas c2 y c3}
+ \end{figure}
+ 
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.45\textwidth]{./images/c4}
+  \includegraphics[width=0.45\textwidth]{./images/c5}
+  \caption{Gráficos de los datasets de las columnas c4 y c5}
+ \end{figure}
+ 
+ 
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.45\textwidth]{./images/c6}
+  \includegraphics[width=0.45\textwidth]{./images/c7}
+  \caption{Gráficos de los datasets de las columnas c6 y c7}
+ \end{figure}
+ 
+ 
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.45\textwidth]{./images/c8}
+  \includegraphics[width=0.45\textwidth]{./images/c9}
+  \caption{Gráficos de los datasets de las columnas c8 y c9}
+ \end{figure}
+ 
+ 

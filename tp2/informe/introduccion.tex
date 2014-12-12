@@ -1,2 +1,10 @@
 \section{Introducción}
 
+
+Con el avance de la tecnología y la capacidad de almacenamiento, las bases de datos tienden a almacenar cada vez más información. En un principio, parece una ventaja, sin embargo, se puede inferir trivialmente que un almacenamiento tan masivo puede ocasionar problemas a la hora de realizar búsquedas. Mientras más grande es el espacio de búsqueda, mayor será el tiempo a invertir para lograr el objetivo.
+
+El \textbf{optimizador de consultas}, componente clave del motor de base de datos, es el que combate el problema del tiempo antes mencionado. Su misión es, como bien explica su propio nombre, tratar de optimizar la forma de realizar la consulta con el fin de obtener la respuesta lo más rápido posible. Entre muchas otras cosas, el componente hace un fuerte uso de \textbf{estimadores} para poder llevar a cabo la optimización. Un \textbf{estimador} es un {\Huge ente} que brinda información aproximada de la cantidad de elementos que cumplen cierta condición (también llamada \textbf{selectividad}). Por lo tanto, el optimizador intentará reescribir la consulta de distintas maneras (manteniendo el valor semántico de ella) y a través de distintas estimaciones, tomar una desición de cuál será la forma más eficiente de realizar la consulta. Si bien la precisión de la estimación debe ser lo más ajustada posible, tiene mayor importancia la velocidad con la que se realiza; dado que este procedimiento se repetirá por cada consulta a la base. Por lo tanto, el conocimiento sobre información específica de los elementos (distribución, dispersión, densidad, etc) juega un papel determinante a la hora de la elección del estimador.
+
+En el presente trabajo, detallamos tres implementaciones distintas de estimadores, mostrando sus diferentes comportamientos frente a distintos tipos de bases de datos, comparándolos y extrayendo conclusiones. 
+
+

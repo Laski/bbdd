@@ -19,7 +19,7 @@ def graficar_dataset(nombre_bd, tabla, columna):
 
 
 def graficar_datasets_catedra():
-    for i in range(0,10):
+    for i in range(0, 10):
         graficar_dataset("datasets/db.sqlite3", "table1", "c"+str(i))
 
 
@@ -37,7 +37,7 @@ def diferencias_performance(tipo1, tipo2):
     bd = "datasets/db.sqlite3"
     tabla = "table1"
     res = []
-    for i in range(0,10):
+    for i in range(0, 10):
         col = "c"+str(i)
         print col
         

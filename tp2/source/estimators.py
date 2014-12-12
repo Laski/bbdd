@@ -78,7 +78,7 @@ class ClassicHistogram(Estimador):
             bucket = self.ubicar(valor)
         except IndexError:
             return 0    # si el valor está fuera del rango, la probabilidad de que uno sea igual a el es 0
-        return self.probabilidades[bucket]
+        return self.probabilidades[bucket]/self.longitud_bucket
 
     def estimate_greater(self, valor):
         try:
@@ -123,33 +123,6 @@ class DistributionSteps(Estimador):
                     if self.bordes.count(valor < 2)])
         return acum / float((self.n_registros**2))
 
-    def es_extremo(self, valor):
-        return valor == self.bordes[0] or valor == self.bordes[-1]
-
-    def entre_bordes(self, valor):
-        # caso A
-        return self.bordes.count(valor) == 0 and not self.fuera_del_histograma(valor)
-
-    def igual_a_uno_no_extremo(self, valor):
-        # caso B1
-        return self.bordes.count(valor) == 1 and not self.es_extremo(valor)
-
-    def igual_a_varios_no_extremos(self, valor):
-        # caso B2
-        return self.bordes.count(valor) > 1 and not self.es_extremo(valor)
-
-    def igual_a_varios_incluyendo_extremos(self, valor):
-        # caso C
-        return self.bordes.count(valor) > 1 and self.es_extremo(valor)
-
-    def igual_a_un_extremo(self, valor):
-        # caso C1
-        return self.bordes.count(valor) == 1 and self.es_extremo(valor)
-
-    def fuera_del_histograma(self, valor):
-        # caso D
-        return valor < self.bordes[0] or valor > self.bordes[-1]
-
     def estimate_equal(self, valor):
         # extraido del paper
         if self.entre_bordes(valor) or self.igual_a_uno_no_extremo(valor):
@@ -188,8 +161,6 @@ class DistributionSteps(Estimador):
             return (self.ubicar(valor)-0.5)/self.parametro
         if self.igual_a_varios_incluyendo_extremos(valor):
             # caso C
-            if valor == self.bordes[0] == self.bordes[-1]:
-                return 0    # nadie es menor porque todos son iguales
             if valor == self.bordes[0]:
                 return 0    # nadie es menor porque todos son mayores o iguales
             if valor == self.bordes[-1]:
@@ -213,6 +184,33 @@ class DistributionSteps(Estimador):
         limite_inferior = max([limite for limite in self.bordes if limite <= valor])
         return float(self.bordes.index(limite_inferior))    # casteo a float porque se lo va a usar para aritmética flotante
 
+    def es_extremo(self, valor):
+        return valor == self.bordes[0] or valor == self.bordes[-1]
+
+    def entre_bordes(self, valor):
+        # caso A
+        return self.bordes.count(valor) == 0 and not self.fuera_del_histograma(valor)
+
+    def igual_a_uno_no_extremo(self, valor):
+        # caso B1
+        return self.bordes.count(valor) == 1 and not self.es_extremo(valor)
+
+    def igual_a_varios_no_extremos(self, valor):
+        # caso B2
+        return self.bordes.count(valor) > 1 and not self.es_extremo(valor)
+
+    def igual_a_varios_incluyendo_extremos(self, valor):
+        # caso C
+        return self.bordes.count(valor) > 1 and self.es_extremo(valor)
+
+    def igual_a_un_extremo(self, valor):
+        # caso C1
+        return self.bordes.count(valor) == 1 and self.es_extremo(valor)
+
+    def fuera_del_histograma(self, valor):
+        # caso D
+        return valor < self.bordes[0] or valor > self.bordes[-1]
+
 
 class EstimadorGrupo(Estimador):
     # usa el parametro para hacer un cache con ese tamaño
@@ -226,15 +224,22 @@ class EstimadorGrupo(Estimador):
 
     def estimate_equal(self, valor):
         if valor in self.dict_cache:
-          return float(self.dict_cache[valor]) / self.n_registros
+            return float(self.dict_cache[valor]) / self.n_registros
         if valor in self.dict_cant_values:
-          return float(self.dict_cant_values[valor]) / self.n_registros
+            return float(self.dict_cant_values[valor]) / self.n_registros
         return 0
 
     def estimate_greater(self, valor):
-        if valor in self.dict_cant_values:
-          return float((self.n_registros - self.dict_acum_values[valor])) / self.n_registros
-        return 0
+        if valor in self.dict_acum_values:
+            return float((self.n_registros - self.dict_acum_values[valor])) / self.n_registros
+        if valor < min(self.dict_acum_values.keys()):
+            return 1
+        if valor > max(self.dict_acum_values.keys()):
+            return 0
+        return self.estimate_greater(self.ubicar_menor_mas_cercano(valor))
+    
+    def ubicar_menor_mas_cercano(self, valor):
+        return max([v for v in self.dict_acum_values.keys() if v < valor])
 
 
 class EstimadorPerfecto(Estimador):

@@ -32,19 +32,18 @@ Por su lado, el método de Distribution Steps presenta comportamientos matemáti
 Por último, hace falta aclarar que en ambos estimadores un mayor parámetro $S$ permitirá una precisión mayor, pues aumenta la ``definición'' de los buckets y con eso la veracidad de las suposiciones en las que se basan los estimadores. Como ambos asumen en algún momento que $x_0$ cae en la mitad de su bucket, cuantos menos elementos haya en los mismos más verdadera será la afirmación y por ende mejor será la performance. Concluimos entonces que a un mayor $S$ la performance de ambos estimadores mejorará.
 
 \subsection{Performance en distribuciones normales}
-La distribución normal presenta mucha concentración de datos alrededor de una media y va disminuyendo alrededor de ella.
+La distribución normal presenta mucha concentración de datos alrededor de una media y colas que caen, disminuyendo alrededor de ella.
 
 \subsubsection{Consultas por igualdad}
 El Histograma Clásico, asumiendo suficiente cantidad de buckets, podrá hacer estimaciones bastante cercanas a la realidad. Mejorará a medida que $S$ aumente, porque podrá evaluar más precisamente las diferentes secciones. En cambio, para valores de $S$ pequeños tendrá mala performance, pues cada bucket abarcará datos con mucha variabilidad dentro suyo.
 
-Distribution Steps estará 
+Distribution Steps por igualdad, como ya dijimos, difícilmente dependa de $S$. En los extremos de la distribución el caso más probable es que $x_0$ no coincida con los límites, en ese caso la densidad será utilizada. Dependiendo del $sigma$ de la distribución esto puede representar un problema o no. Entendemos que para un $sigma$ pequeño, donde muchos elementos se repiten, la densidad podría no ser buena representante de la probabilidad para un elemento de la cola de la distribución. Sin embargo para $sigmas$ mayores, es decir, distribuciones con colas más extensas, la densidad sería más baja y aproximaría mejor la probabilidad del elemento del extremo. Lo contrario ocurre con los elementos centrales, con el agravante de que estos tienen más probabilidad de coincidir con varios límites y eventualmente provocar que el estimador caiga en los casos donde intenta minimizar el error en el peor caso.
+
 
 \subsubsection{Consultas por mayor}
 El Histograma Clásico tendrá performance pobre en el centro de la distribución, porque es en los buckets más densamente poblados donde presenta mayores problemas para el cálculo de $Sel(>x_0)$. A medida que aumente la cantidad de buckets intuimos que su perfomance mejorará bastante, pues dismiuirá el procentaje de elementos por bucket, reduciendo el error de la estimación.
 
-Distribution Steps también se verá muy beneficiado por un aumento de la definición que le permita analizar con más precisión los sectores de la distribución. En general intuimos que la performance será aceptable, dado que la distribución normal no presenta características que le afecten fuertemente a este estimador.
-
-
+Distribution Steps también se verá muy beneficiado por un aumento de $S$ que le permita analizar con más definición los sectores de la distribución. En general intuimos que la performance será aceptable, dado que fue pensado para manejar correctamente la selectividad por mayor en los casos en que las distribuciones presentan grandes concentraciones de datos en cierto punto.
 
 \subsection{Performance de nuestro estimador propio}
 Dado que nuestro estimador obtiene el histograma más detallado posible de la distribución que analiza (pues todo bucket tiene ancho 1) podemos decir que no pierde información. A partir de una instancia de nuestro estimador se puede reconstruir la distribución entera, con lo cual CuentaApariciones\texttrademark es \textbf{perfecto}. Su error siempre será 0 porque tiene en él toda la información necesaria. ¿Dónde está el truco?

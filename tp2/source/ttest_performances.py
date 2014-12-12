@@ -31,7 +31,7 @@ def rango(nombre_bd, tabla, columna):
     return minimo, maximo
 
     
-def diferencias_performance(tipo1, tipo2):
+def diferencias_performance(tipo1, tipo2, param):
     print("#########################")
     print(tipo1.title() + " vs " + tipo2.title())
     bd = "datasets/db.sqlite3"
@@ -41,8 +41,8 @@ def diferencias_performance(tipo1, tipo2):
         col = "c"+str(i)
         print col
         
-        est1 = get_estimator(tipo1, bd, tabla, col, 100)
-        est2 = get_estimator(tipo2, bd, tabla, col, 100)
+        est1 = get_estimator(tipo1, bd, tabla, col, param)
+        est2 = get_estimator(tipo2, bd, tabla, col, param)
         est_perfecto = est.EstimadorPerfecto(bd, tabla, col)
         
         perf1_equal = empirico.calcular_performance_global(est1.estimate_equal, est_perfecto.estimate_equal)
@@ -98,6 +98,6 @@ def ttest_estimadores(bd, tabla, col, est1, est2):
 
 if __name__ == "__main__":
     #graficar_datasets_catedra()
-    diferencias_performance("classic", "steps")
-    diferencias_performance("classic", "propio")
-    diferencias_performance("steps", "propio")
+    diferencias_performance("classic", "steps", 100)
+    diferencias_performance("classic", "propio", 100)
+    diferencias_performance("steps", "propio", 100)

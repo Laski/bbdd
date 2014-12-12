@@ -20,7 +20,7 @@ print "  Sel(>%d) : %3.2f" % (70, aEstimator.estimate_greater(70))
 aEstimator = estimators.EstimadorGrupo('datasets/db.sqlite3', 'table1', 'c1', parametro=20)
 print "Estimador Grupo"
 print "  Sel(=%d) : %3.2f" % (50, aEstimator.estimate_equal(50))
-print "  Sel(>%d) : %3.2f" % (60, aEstimator.estimate_greater(60))
+print "  Sel(>%d) : %3.2f" % (70, aEstimator.estimate_greater(70))
 
 # Perfecto
 aEstimator = estimators.EstimadorPerfecto('datasets/db.sqlite3', 'table1', 'c1', parametro=20)

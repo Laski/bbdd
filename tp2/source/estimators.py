@@ -27,6 +27,7 @@ class Estimador(object):
     """Clase base de los estimadores."""
     def __init__(self, db, tabla, columna, parametro=10):
         validar(db, tabla, columna)
+        self.nombre_db = db
         self.db = InterfazBD(db)
         self.tabla = tabla
         self.columna = columna
@@ -215,31 +216,29 @@ class DistributionSteps(Estimador):
 class EstimadorGrupo(Estimador):
     # usa el parametro para hacer un cache con ese tamaño
     def build_struct(self):
-        self.dict_cant_values = dict((x, y) for x, y in self.db.realizar_consulta(self.consulta_cuenta_ocurrencias))
-        values = [self.dict_cant_values.get(k) for k in sorted(self.dict_cant_values.keys())]
-        acum = np.cumsum(values)  # hace los acumulados
-        self.dict_acum_values = dict(zip(list(sorted(self.dict_cant_values.keys())), list(acum)))
-        consulta_cache = "SELECT " + self.columna + ", COUNT(*) FROM " + self.tabla + " GROUP BY " + self.columna + " ORDER BY COUNT(*) DESC"
-        self.dict_cache = dict((x, y) for x, y in [x for x in self.db.realizar_consulta(consulta_cache)][:self.parametro])  # cache de tamaño self.parametro
-
+        self.estimador_clasico = ClassicHistogram(self.nombre_db, self.tabla, self.columna, self.parametro) #acá puedo no pasarle parámetro y que sea el default (10) o pasarle el parámetro que me viene, opte por la segunda así el estimador de "respaldo" también mejora a medida que aumenta p
+        #self.dict_acum_values = dict(zip(list(sorted(self.dict_cant_values.keys())), list(acum)))
+        consulta_cache_igualdad = "SELECT " + self.columna + ", COUNT(*) FROM " + self.tabla + " GROUP BY " + self.columna + " ORDER BY COUNT(*) DESC"
+        self.dict_cache_igualdad = dict((x, y) for x, y in [x for x in self.db.realizar_consulta(consulta_cache_igualdad)][:self.parametro])  # cache de tamaño self.parametro
+        self.dict_cache_mayor = dict()
+        for x in list(self.dict_cache_igualdad):
+            consulta = "SELECT COUNT(*) FROM " + self.tabla + " WHERE " + self.columna + " > " + str(x)
+            self.dict_cache_mayor[x] = self.db.realizar_consulta(consulta)
+        
     def estimate_equal(self, valor):
-        if valor in self.dict_cache:
-            return float(self.dict_cache[valor]) / self.n_registros
-        if valor in self.dict_cant_values:
-            return float(self.dict_cant_values[valor]) / self.n_registros
-        return 0
+        if valor in self.dict_cache_igualdad:
+            return float(self.dict_cache_igualdad[valor]) / self.n_registros
+        else:
+            return self.estimador_clasico.estimate_equal(valor)
 
     def estimate_greater(self, valor):
-        if valor in self.dict_acum_values:
-            return float((self.n_registros - self.dict_acum_values[valor])) / self.n_registros
-        if valor < min(self.dict_acum_values.keys()):
-            return 1
-        if valor > max(self.dict_acum_values.keys()):
-            return 0
-        return self.estimate_greater(self.ubicar_menor_mas_cercano(valor))
+        if valor in self.dict_cache_mayor:
+            return float(self.dict_cache_mayor[valor]) / self.n_registros
+        else:
+            return self.estimador_clasico.estimate_greater(valor)
     
-    def ubicar_menor_mas_cercano(self, valor):
-        return max([v for v in self.dict_acum_values.keys() if v < valor])
+#    def ubicar_menor_mas_cercano(self, valor):
+#        return max([v for v in self.dict_acum_values.keys() if v < valor])
 
 
 class EstimadorPerfecto(Estimador):

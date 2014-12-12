@@ -35,7 +35,15 @@ Por último, hace falta aclarar que en ambos estimadores un mayor parámetro $S$
 La distribución normal presenta mucha concentración de datos alrededor de una media y va disminuyendo alrededor de ella.
 
 \subsubsection{Consultas por igualdad}
-El Histograma Clásico, asumiendo suficiente cantidad de buckets, podrá hacer estimaciones bastante cercanas a la realidad. Mejorará mucho a medida que $S$ aumente, porque podrá evaluar más precisamente las diferentes secciones 
+El Histograma Clásico, asumiendo suficiente cantidad de buckets, podrá hacer estimaciones bastante cercanas a la realidad. Mejorará a medida que $S$ aumente, porque podrá evaluar más precisamente las diferentes secciones. En cambio, para valores de $S$ pequeños tendrá mala performance, pues cada bucket abarcará datos con mucha variabilidad dentro suyo.
+
+Distribution Steps estará 
+
+\subsubsection{Consultas por mayor}
+El Histograma Clásico tendrá performance pobre en el centro de la distribución, porque es en los buckets más densamente poblados donde presenta mayores problemas para el cálculo de $Sel(>x_0)$. A medida que aumente la cantidad de buckets intuimos que su perfomance mejorará bastante, pues dismiuirá el procentaje de elementos por bucket, reduciendo el error de la estimación.
+
+Distribution Steps también se verá muy beneficiado por un aumento de la definición que le permita analizar con más precisión los sectores de la distribución. En general intuimos que la performance será aceptable, dado que la distribución normal no presenta características que le afecten fuertemente a este estimador.
+
 
 
 \subsection{Performance de nuestro estimador propio}

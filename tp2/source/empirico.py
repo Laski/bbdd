@@ -21,10 +21,10 @@ def calcular_performance_global(metodo_testeable, metodo_perfecto):
     return sum(performances_intermedias) / len(valores_consultas)
 
 
-def calcular_error(archivo, tipo_estimador, tipo):
-    # 'tipo' debe ser "equal" o "greater"
+def calcular_error(archivo, tipo_estimador, selectividad):
+    # 'selectividad' debe ser "equal" o "greater"
     errores = {}   # diccionario 'p' -> error medio
-    for p in range(10, 200, 10):
+    for p in range(5, 200, 5):
         if tipo_estimador == "classic":
             estimador = estimators.ClassicHistogram(archivo, 'datos', 'c', p)
         elif tipo_estimador == "steps":
@@ -33,9 +33,9 @@ def calcular_error(archivo, tipo_estimador, tipo):
             estimador = estimators.EstimadorGrupo(archivo, 'datos', 'c', p)
         perfecto  = estimators.EstimadorPerfecto(archivo, 'datos', 'c', p)
         bd = InterfazBD(archivo)
-        if tipo == "equal":
+        if selectividad == "equal":
             errores[p] = calcular_performance_global(estimador.estimate_equal,   perfecto.estimate_equal)
-        elif tipo == "greater":
+        elif selectividad == "greater":
             errores[p] = calcular_performance_global(estimador.estimate_greater, perfecto.estimate_greater)
     return errores
 

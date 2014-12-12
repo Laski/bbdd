@@ -21,8 +21,6 @@ def calcular_performance_global(metodo_testeable, metodo_perfecto):
     return sum(performances_intermedias) / len(valores_consultas)
 
 
-    
-
 def calcular_error(archivo, tipo_estimador, tipo):
     # 'tipo' debe ser "equal" o "greater"
     errores = {}   # diccionario 'p' -> error medio
@@ -58,7 +56,6 @@ def graficar(archivo, datos):
     plt.xlabel("Parametro S")
     plt.ylabel("Error medio")
     plt.legend()
-    plt.yscale('log')
     plt.savefig(archivo)
 
 

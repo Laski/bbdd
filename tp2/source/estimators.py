@@ -221,8 +221,6 @@ class EstimadorGrupo(Estimador):
         self.dict_acum_values = dict(zip(list(sorted(self.dict_cant_values.keys())), list(acum)))
         consulta_cache = "SELECT " + self.columna + ", COUNT(*) FROM " + self.tabla + " GROUP BY " + self.columna + " ORDER BY COUNT(*) DESC"
         self.dict_cache = dict((x, y) for x, y in [x for x in self.db.realizar_consulta(consulta_cache)][:self.parametro])  # cache de tamaño self.parametro
-        import sys
-        print sys.getsizeof(self.dict_cant_values) + sum([sys.getsizeof(x) for x in self.dict_cant_values.keys()]) + sum([sys.getsizeof(x) for x in self.dict_cant_values.values()])
 
     def estimate_equal(self, valor):
         if valor in self.dict_cache:

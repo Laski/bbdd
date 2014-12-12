@@ -32,7 +32,10 @@ Por su lado, el método de Distribution Steps presenta comportamientos matemáti
 Por último, hace falta aclarar que en ambos estimadores un mayor parámetro $S$ permitirá una precisión mayor, pues aumenta la ``definición'' de los buckets y con eso la veracidad de las suposiciones en las que se basan los estimadores. Como ambos asumen en algún momento que $x_0$ cae en la mitad de su bucket, cuantos menos elementos haya en los mismos más verdadera será la afirmación y por ende mejor será la performance. Concluimos entonces que a un mayor $S$ la performance de ambos estimadores mejorará.
 
 \subsection{Performance en distribuciones normales}
+La distribución normal presenta mucha concentración de datos alrededor de una media y va disminuyendo alrededor de ella.
 
+\subsubsection{Consultas por igualdad}
+El Histograma Clásico, asumiendo suficiente cantidad de buckets, podrá hacer estimaciones bastante cercanas a la realidad. Mejorará mucho a medida que $S$ aumente, porque podrá evaluar más precisamente las diferentes secciones 
 
 
 \subsection{Performance de nuestro estimador propio}
@@ -51,9 +54,11 @@ Entonces, concluimos que es un excelente estimador para distribuciones esparsas 
 Mencionamos ya un poco este tema en la sección de estimadores. Miremos primero la selectividad por igualdad.
 \begin{itemize}
  \item El estimador por Histogramas Clásicos presentará mala performance en una distribución con elementos distribuidos en intervalos y en el medio ``lagunas'' despobladas, por ejemplo la capacidad en GB de un conjunto de discos rígidos. Si la longitud de las lagunas es menor que el ancho de los buckets, siempre que sea consultado por elementos que caigan en las ``lagunas'' responderá una probabilidad grande cuando en realidad la respuesta correcta será 0. Si el ancho de los buckets es menor al de las lagunas, de todos modos la performance será mala en los valores cercanos a los que sí aparecen en la distribución.
- \item El estimador de Distribution Steps presentará mala performance en una distribución donde la simple densidad no sea un buen representante de la probabilidad. Por ejemplo, con elementos distribuidos de formas poco equitativas, donde algunos valores tienen muchos representantes y otros pocos.
+ \item El estimador de Distribution Steps presentará mala performance en una distribución donde la simple densidad no sea un buen representante de la probabilidad. Por ejemplo, con elementos distribuidos de formas poco equitativas, donde algunos valores tengan muchos representantes y otros pocos.
 \end{itemize}
 Respecto a la selectividad por mayor:
 \begin{itemize}
- \item Como ya mencionamos, el estimador de Histogramas Clásicos funcionará mal en distribuciones con muchos valores concentrados entre sí.
+ \item Como ya mencionamos, el estimador de Histogramas Clásicos funcionará mal en distribuciones con muchos valores concentrados entre sí. Para valores pequeños de $S$, su estimación para valores que caigan en los buckets más poblados tiene un error muy grande.
+ \item Nuevamente en una distribución con mucha variabilidad en sus datos, Distribution Steps se comportará pobremente a la hora de calcular $Sel(>x_0)$.
 \end{itemize}
+Repetimos que nuestro estimador es perfecto a nivel performance, sus problemas pasan por otro lado.

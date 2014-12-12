@@ -55,7 +55,7 @@ def graficar(archivo, datos):
     for tipo_estimador in datos:
         x, y = getxy(datos[tipo_estimador])
         plt.errorbar(x, y, label=tipo_estimador.title())
-    plt.xlabel("Parametro p")
+    plt.xlabel("Parametro S")
     plt.ylabel("Error medio")
     plt.legend()
     plt.yscale('log')

@@ -44,7 +44,7 @@ Para resolver consultas por igualdad, el estimador usa fuertemente el valor de $
  \item Si el valor es menor al mínimo o mayor al máximo está fuera de la distribución, con lo cual la probabilidad es 0.
 \end{itemize}
 
-Para las consultas por mayor, el estimador recurrre a las fórmulas definidas en el paper pero considerando que estas en realidad sirven para calcular la selectividad por menor, con lo cual debe utilizar $Sel(>x_0) = 1 - Sel(<x_0) - Sel(=x_0)$\footnote{Lo cual vale por los axiomas definidos en el paper, en particular $Consistency$.}. Dichas fórmulas son (llamando $X$ al bucket más a la izquierda que incluya valores iguales a $x_0$ y $K$ a la cantidad de límites con los que $x_0$ coincida):
+Para las consultas por mayor, el estimador recurrre a las fórmulas definidas en el paper pero considerando que estas en realidad sirven para calcular la selectividad por menor, con lo cual debe utilizar $Sel(>x_0) = 1 - Sel(<x_0) - Sel(=x_0)$\footnote{Lo cual vale por los axiomas definidos en el paper, en particular $Consistency$.}. Dichas fórmulas son (llamando $X$ al índice del bucket más a la izquierda que incluya valores iguales a $x_0$ y $K$ a la cantidad de límites con los que $x_0$ coincida):
 \begin{itemize}
  \item si $x_0$ no coincide con ningún límite, $\frac{X+0.5}{S} - \frac{\delta}{2}$
  \item si $x_0$ coincide con un límite no-extremo, $\frac{X}{S} - \frac{\delta}{2}$
@@ -59,7 +59,7 @@ y por último, dos casos borde:
 \end{itemize}
 
 \subsection{Estimador Propio}
-Al realizar los análisis de los estimadores presentados en el paper, descubrimos un caso en el cual ninguno de los dos es muy preciso: cuando el rango es grande pero los elementos toman pocos valores dentro de ella (llamamos a estas \textbf{distribuciones esparsas}) y nos propusimos encontrar un estimador que los resuelva correctamente. Fue así que dimos con el estimador CuentaApariciones\texttrademark que resuelve estos casos a la perfección. A la hora de su creación, genera dos diccionarios:
+Al realizar los análisis de los estimadores presentados en el paper, descubrimos un caso en el cual ninguno de los dos es muy preciso: cuando el rango es grande pero los elementos toman pocos valores dentro de él (llamamos a estas \textbf{distribuciones esparsas}) con lo que nos propusimos encontrar un estimador que los resuelva correctamente. Fue así que dimos con el estimador CuentaApariciones\texttrademark que resuelve estos casos a la perfección. A la hora de su creación, genera dos diccionarios:
 \begin{itemize}
  \item El primero guarda, para cada elemento, su cantidad de apariciones en la columna.
  \item El segundo guarda, para cada elemento, la suma de su cantidad de apariciones y las de todo elemento menor (como el anterior pero con el acumulado hasta el momento).

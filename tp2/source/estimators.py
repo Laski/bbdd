@@ -223,7 +223,9 @@ class EstimadorGrupo(Estimador):
         self.dict_cache_mayor = dict()
         for x in list(self.dict_cache_igualdad):
             consulta = "SELECT COUNT(*) FROM " + self.tabla + " WHERE " + self.columna + " > " + str(x)
-            self.dict_cache_mayor[x] = self.db.realizar_consulta(consulta)
+            (val,) = list(self.db.realizar_consulta(consulta))[0]
+            #print val
+            self.dict_cache_mayor[x] = val
         
     def estimate_equal(self, valor):
         if valor in self.dict_cache_igualdad:

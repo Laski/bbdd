@@ -41,8 +41,8 @@ def diferencias_performance(tipo1, tipo2):
         col = "c"+str(i)
         print col
         
-        est1 = get_estimator(tipo1, bd, tabla, col)
-        est2 = get_estimator(tipo2, bd, tabla, col)
+        est1 = get_estimator(tipo1, bd, tabla, col, 100)
+        est2 = get_estimator(tipo2, bd, tabla, col, 100)
         est_perfecto = est.EstimadorPerfecto(bd, tabla, col)
         
         perf1_equal = empirico.calcular_performance_global(est1.estimate_equal, est_perfecto.estimate_equal)
@@ -68,13 +68,13 @@ def diferencias_performance(tipo1, tipo2):
     print
 
 
-def get_estimator(tipo, bd, tabla, col):
+def get_estimator(tipo, bd, tabla, col, param):
     if tipo == "classic":
-        return est.ClassicHistogram(bd, tabla, col)
+        return est.ClassicHistogram(bd, tabla, col, param)
     elif tipo == "steps":
-        return est.DistributionSteps(bd, tabla, col)
+        return est.DistributionSteps(bd, tabla, col, param)
     elif tipo == "propio":
-        return est.EstimadorGrupo(bd, tabla, col)
+        return est.EstimadorGrupo(bd, tabla, col, param)
 
 
 def ttest_estimadores(bd, tabla, col, est1, est2):
@@ -97,7 +97,7 @@ def ttest_estimadores(bd, tabla, col, est1, est2):
 
 
 if __name__ == "__main__":
-    graficar_datasets_catedra()
+    #graficar_datasets_catedra()
     diferencias_performance("classic", "steps")
     diferencias_performance("classic", "propio")
     diferencias_performance("steps", "propio")

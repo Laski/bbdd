@@ -73,7 +73,7 @@ Para resolver las consultas por mayor hay tres casos:
  \item Si el elemento no aparece en la distribución pero cae dentro ($min < x_0 < max$) también hay que calcular el porcentaje de elementos mayores a él, lo cual se logra computando $Sel(>menor_inmediato(x_0))$ donde $menor_inmediato(x_0)$ es el máximo elemento menor a $x_0$ que sí aparece en la distribución.
  \item Si el elemento cae fuera de la distribución, procedemos como de costumbre devolviendo $1$ si es $<min$ o $0$ si es $>max$.
 \end{itemize}
-Esto se calcula rápido si el elemento está en la distribución (solo hay que buscarlo en el segundo diccionario) o está fuera del rango, y un poco más lento si está dentro del rango pero no aparece (porque hay que buscar en los diccionarios el menor elemento que sí aparezca).
+Esto se calcula rápido si el elemento está en la distribución (solo hay que buscarlo en el segundo diccionario) o está fuera del rango, y un poco más lento si está dentro del rango pero no aparece (porque hay que buscar en los diccionarios el máximo elemento menor que sí aparezca).
 
 Para aprovechar el parámetro de algún modo, decidimos hacer un caché con los $S$ elementos más frecuentes, y armar un diccionario específico para ellos que es el primero en ser consultado. La precisión del algoritmo no depende del parámetro pero sí su velocidad.
 

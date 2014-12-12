@@ -1,8 +1,80 @@
 \section{Estimadores}
 Los estimadores que diseñamos fueron tres: un estimador basado en histogramas clásicos (punto 4.1 del paper de Piatetsky-Shapiro), un estimador basado en ``pasos de distribución'' (punto 4.2 del mismo paper) y uno propio, diseñado a partir de observar un tipo de distribución en la cual los dos anteriores no funcionaban bien.
 
+Los tres estimadores comparten una serie de premisas:
+\begin{itemize}
+ \item Reciben por parámetro una columna para hacer su estimación
+ \item Reciben un parámetro extra que influye en algún aspecto de su comportamiento (en adelante llamado $S$)
+ \item En su construcción pueden tomarse el tiempo que sea necesario para incializar sus estructuras...
+ \item ...pero no pueden asumir que la columna completa entre en memoria. Es decir, deben hacer uso del motor de bases de datos para resolver las consultas que necesiten. 
+ \item Una vez inicializados, deben responder rápidamente ambas consultas posibles: por igualdad (la probabilidad de que un elemento al azar de la columna sea igual a un $x_0$ pasado por parámetro) y por mayor (idem con mayor estricto en lugar de igual). Las llamamos $Sel(=x)$ y $Sel(>x)$.
+\end{itemize}
+
+Para realizar los análisis desde el punto de vista general y no entrar en casos borde poco probables, vamos a tomar como regla general que $S$ es ``pequeño'' respecto de la longitud del rango de la distribución\footnote{Llamamos $rango$ a la lista de enteros entre el elemento máximo y el mínimo de la distribución, es decir, a los valores que, asumimos, puede tomar un elemento de la distribución} (al menos un órden de magnitud menor).
 
 
+\subsection{Estimador basado en Historgramas Clásicos}
+La idea del estimador consiste en generar un histograma de la distribución para realizar las consultas rápidamente. El histograma generado tiene $S$ barras de ancho constante (el suficiente para cubrir toda la distribución) y altura variable dependiendo de la cantidad de elementos de la columna que ``caigan'' en el bucket. Notar que esto genera buckets con límites siempre distintos, pues son generados por una división regular del rango de la distribución.
 
-%hay que hablar de la decisión de devolver la altura de la barrita en el clásico para comparación por igual (porque no podemos tener más información que esa)
-%y de la decisión de minimizar el error en el caso promedio porque es lo mejor según el paper
+Una vez construido el histograma, el estimador arma un histograma secundario ``normalizado'' cuyos límites coinciden con el principal pero cuyas barras fueron divididas por la cantidad de registros totales. A la hora de responder consultas usará este histograma, pues es más útil el porcentaje de elementos que caen en cada bucket que la cantidad absoluta.
+
+Como el paper no especifica qué devolver a la hora de resolver las consultas por igualdad, analizamos dos opciones: está claro que el primer paso siempre es buscar el bucket correspondiente a $x_0$ (solo puede haber uno\footnote{Si es que lo hay. Si no lo hay, el estimador devuelve 0 pues ningún elemento puede ser igual a uno que cae fuera de la distribución.}) y obtener el valor correspondiente en el histograma de porcentajes. Ahora bien, podíamos elegir devolverlo directamente, con lo cuál en realidad estaríamos devolviendo la probabilidad de que un elemento caiga en el mismo bucket que $x_0$, o podemos dividir ese resultado por la longitud del bucket, dando algo más aproximado a una probabilidad de igualdad al elemento en sí. Inicialmente preferimos la primera opción, considerando que con la segunda estábamos asumiendo que la distribución (dentro del bucket) era uniforme y nos parecía una asunción demasiado fuerte. Pero pronto nos dimos cuenta de que la segunda tenía mucha mejor performance no solo en una distribución uniforme sino en todas, con lo cual decidimos quedarnos con esa\footnote{Por falta de tiempo y por no estar dentro de la consigna del trabajo no incluímos aquí dichos análisis, pero nos pareció una decisión relevante como para comentarla en esta sección.}. Analíticamente tiene sentido también, la probabilidad de un elemento no es la probabilidad del rango en el que cae sino que casi siempre suele ser menor.
+
+A la hora de responder consultas por mayor el paper es más específico: hace falta responder un promedio entre la probabilidad de que un elemento caiga en un bucket mayor al de $x_0$ (la cual se obtiene sumando los porcentajes de todos los buckets mayores) y la probabilidad de que un elemento caiga en el mismo bucket que $x_0$ o en uno mayor (la cual se obtiene también sumando los porcentajes de ese bucket y los de todos sus buckets mayores). Es decir, la probabilidad termina siendo la suma entre
+\begin{itemize}
+ \item el porcentaje de elementos que caen en buckets mayores y
+ \item la mitad del porcentaje correspondiente al bucket de $x_0$.
+\end{itemize}
+Es decir, a grandes rasgos se asume que $x_0$ tiene aproximadamente la mitad de los elementos de su propio bucket mayores que él. Esto puede parecer sensato en el caso general (pues intenta minimizar el error), el problema ocurre cuando $x_0$ comparte buckets con muchos elementos (lo cual puede pasar para distribuciones de rangos amplios pero muy concentradas en cierta región). En ese caso el porcentaje correspondiente al bucket de $x_0$ es grande, y el error por lo tanto también lo es\footnote{Intuitivamente, cuanto más lejos esté $x_0$ del ``centro'' del bucket, más diferencia habrá entre la probabilidad real y la estimada. Como esta diferencia solo está acotada por la mitad del porcentaje del bucket, un bucket con gran porcentaje puede producir un error inaceptable}. Este error, en casos exagerados, podría llegar a ser tan grosero como 50\% (el cual es alcanzable simplemente respondiendo siempre $0.5$), con lo cual el paper se propone buscar otro método de estimación que evite ese problema.
+
+\subsection{Estimador basado en Distribution Steps}
+Este estimador se propone alterar la idea del Histograma Clásico para atacar el problema recién mencionado. Lo resuelve armando un histograma donde todas las barras tienen siempre la misma altura, con lo cual evita el caso de un tener uno o pocos buckets con un gran porcentaje de la distribución concentrada en ellos, y permitiendo que varíe el ancho de las mismas. Esto trae aparejado un aumento en la complejidad de construcción y algoritmos no tan simples para resolver consultas, pues ahora hay que tener en cuenta los casos en que $x_0$, por ejemplo, coincide con el límite de varios buckets (lo cual en puede ocurrir para las distribuciones con muchos elementos similares).
+
+La construcción nuevamente usa $S$ como la cantidad de buckets, intenta mantener invariante su altura y va eligiendo $S+1$ ``límites'' (llamados $bordes$ en nuestro código) elementos de la distribución, intentando mantener el invariante de que a la izquierda del límite $i$ haya un $(i*\frac{100}{S})\%$ de los elementos. Así, por ejemplo, para $S=10$ el límite 0 es el mínimo de la distribución, el límite $3$ tiene un $30\%$ de elementos a su izquierda, el 8 un $80\%$ y el 10 tiene todos los elementos a su izquierda (es el máximo de la distribución). Para esto es necesario ordenar primero los datos, lo cual implica un costo mayor que en el Histograma Clásico que solo necesita hacer recorridas lineales para buscar máximo y mínimo y luego para ubicar cada elemento en su bucket.
+
+El paper presenta dos opciones distintas para resolver las consultas de este algoritmo una vez generado el estimador: una que minimiza el error en el peor caso y otra que lo minimiza en el caso promedio (pero tiene un error un mayor en el peor caso). Según argumenta, este último suele funcionar mejor en distribuciones de la vida real y específicamente para su utilización en optimización de consultas, por lo que elegimos implementar la versión que minimiza el error en el caso promedio.
+
+Para ese método, el paper utiliza (y da un algoritmo para calcular) un valor llamado $densidad$ de la distribución: un número entre 0 y 1 que intuitivamente intenta aproximar el porcentaje promedio de valores iguales entre sí\footnote{Por ejemplo, una distribución con un solo valor tendrá densidad 1, una con todos valores distintos tendrá densidad $\frac{1}{\#elementos}$.}. Luego, define $\delta = min(\frac{0.5}{S}, densidad)$\footnote{Un análisis simple revela que en buena parte de los casos $\delta = densidad$, pues para que no lo fuese tendría que pasar $\frac{0.5}{S} < densidad$, es decir $0.5 < densidad*S$ (pues $S$ es siempre $>0$). Para visualizar lo fuerte de la implicación, tomemos por ejemplo un $S=100$ (relativamente grande) y una distribución de rango $10000$: para alcanzar la densidad necesaria debería tomar solo 50 valores distintos. Naturalmente puede ocurrir, pero son distribuciones particulares de las que hablaremos más adelante y no el caso general. Como además asumimos que $S$ es comparativamente pequeño respecto del rango, es seguro suponer para los análisis teóricos que efectivamente $\delta = densidad$.}.
+
+Como la altura de los buckets no aporta información en este estimador (siempre es la misma) sus algoritmos se basan mayormente en saber en qué bucket cae el estimador (para la selectividad por mayor), en si coincide o no con uno o varios límites entre buckets y si esos límites incluyen o no extremos, y en el valor de $\delta$. Un detalle a destacar es que para los casos en el que $x_0$ coincide con dos o más límites entre buckets (sean estos extremos o no) el paper recurre a las versiones del algoritmo que minimizan el error en el peor caso (sin dar mucha explicación del motivo). Es por esto que en esos casos el algoritmo no usa el valor de $\delta$ (que se introduce solo en la sección donde se explica cómo minimizar el error promedio). En general las fórmulas que utiliza el estimador están pobremente fundamentadas, diciendo únicamente que ``En la práctica se demostraron muy precisas, incluso más que las anteriores [las que minimizan el error en el peor caso]''.
+
+Para resolver consultas por igualdad, el estimador usa fuertemente el valor de $\delta$. Averiguar en qué bucket cae $x_0$ carece de utilidad en este caso, pues la altura de los mismos no aporta información y tampoco su distancia a los extremos. Sí importa separar los casos en los que coincide con el límite de varios buckets y/o con el de los extremos. Según el caso, el estimador devolverá directamente $\delta$ (si $x_0$ coincide con ningún o un límite no-extremo) o $\frac{\delta}{2}$ (si coincide con el máximo o el mínimo). En los casos en los que $x_0$ coincide con dos o más límites, devolverá $\frac{K}{S}$ (donde $K$ es la cantidad de límites con los cuales coincide) en caso de que ninguno sea extremo, o $\frac{K-0.5}{S}$ en caso de que alguno sea el mínimo o el máximo. Restan dos casos borde:
+\begin{itemize}
+ \item Si el valor coincide tanto con el mínimo como con el máximo entonces todos los elementos de la distribución son iguales a $x_0$, con lo cual la probabilidad es 1.
+ \item Si el valor es menor al mínimo o mayor al máximo está fuera de la distribución, con lo cual la probabilidad es 0.
+\end{itemize}
+
+Para las consultas por mayor, el estimador recurrre a las fórmulas definidas en el paper pero considerando que estas en realidad sirven para calcular la selectividad por menor, con lo cual debe utilizar $Sel(>x_0) = 1 - Sel(<x_0) - Sel(=x_0)$\footnote{Lo cual vale por los axiomas definidos en el paper, en particular $Consistency$.}. Dichas fórmulas son (llamando $X$ al bucket más a la izquierda que incluya valores iguales a $x_0$ y $K$ a la cantidad de límites con los que $x_0$ coincida):
+\begin{itemize}
+ \item si $x_0$ no coincide con ningún límite, $\frac{X+0.5}{S} - \frac{\delta}{2}$
+ \item si $x_0$ coincide con un límite no-extremo, $\frac{X}{S} - \frac{\delta}{2}$
+ \item si $x_0$ coincide con varios límites no-extremos, $\frac{X-0.5}{S}$
+ \item si $x_0$ coincide con varios límites incluyendo el máximo, $1 - \frac{K-0.5}{S}$
+ \item si $x_0$ coincide solo con el máximo, $1 - \frac{\delta}{2}$
+\end{itemize}
+y por último, dos casos borde:
+\begin{itemize}
+ \item si $x_0$ coincide con el mínimo o es menor, $0$
+ \item si $x_0$ es mayor que el máximo, $1$
+\end{itemize}
+
+\subsection{Estimador Propio}
+Al realizar los análisis de los estimadores presentados en el paper, descubrimos un caso en el cual ninguno de los dos es muy preciso: cuando el rango es grande pero los elementos toman pocos valores dentro de ella (llamamos a estas \textbf{distribuciones esparsas}) y nos propusimos encontrar un estimador que los resuelva correctamente. Fue así que dimos con el estimador CuentaApariciones\texttrademark que resuelve estos casos a la perfección. A la hora de su creación, genera dos diccionarios:
+\begin{itemize}
+ \item El primero guarda, para cada elemento, su cantidad de apariciones en la columna.
+ \item El segundo guarda, para cada elemento, la suma de su cantidad de apariciones y las de todo elemento menor (como el anterior pero con el acumulado hasta el momento).
+\end{itemize}
+
+Luego, para resolver las consultas por igualdad simplemente tiene que devolver la cantidad de apariciones del elemento (que puede ser 0 si no está en los diccionarios) sobre la cantidad de elementos totales, y esto lo puede computar fácilmente buscando $x_0$ en el primer diccionario.
+
+Para resolver las consultas por mayor hay tres casos:
+\begin{itemize}
+ \item Si el elemento aparece en la distribución solo tiene que calcular el porcentaje de elementos mayores a él, esto es, $\frac{T-acum(x_0)}{T}$ con $T$ = la cantidad total de elementos y $acum(x_0)$ = el acumulado del elemento $x_0$.
+ \item Si el elemento no aparece en la distribución pero cae dentro ($min < x_0 < max$) también hay que calcular el porcentaje de elementos mayores a él, lo cual se logra computando $Sel(>menor_inmediato(x_0))$ donde $menor_inmediato(x_0)$ es el máximo elemento menor a $x_0$ que sí aparece en la distribución.
+ \item Si el elemento cae fuera de la distribución, procedemos como de costumbre devolviendo $1$ si es $<min$ o $0$ si es $>max$.
+\end{itemize}
+Esto se calcula rápido si el elemento está en la distribución (solo hay que buscarlo en el segundo diccionario) o está fuera del rango, y un poco más lento si está dentro del rango pero no aparece (porque hay que buscar en los diccionarios el menor elemento que sí aparezca).
+
+Para aprovechar el parámetro de algún modo, decidimos hacer un caché con los $S$ elementos más frecuentes, y armar un diccionario específico para ellos que es el primero en ser consultado. La precisión del algoritmo no depende del parámetro pero sí su velocidad.
+
+Notar que el primer diccionario es equivalente a un histograma donde todos los buckets tienen ancho 1 (aunque optimizado en su consumo de memoria para no guardar los elementos que no aparecen). Relacionado con esto, debemos aclarar que este estimador asume fuertemente que la cantidad de elementos distintos de la distribución entra en la memoria, pues guarda para cada uno de ellos dos enteros con información. Si se lo usa con distribuciones extensas y densas, su consumo de memoria es mucho mayor al de los otros estimadores.

@@ -1,5 +1,33 @@
 \section{Análisis empírico}
 
+\subsection{Performance para distribuciones uniforme}
+A continuación mostraremos cómo se comportaron los distintos estimadores en cuanto al error medio obtenido ante la variación del parámetro $p$ de entrada del estimador. Para cada $p$, fueron realizadas $N$ consultas por igualdad y $N$ consultas por mayor.  
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.45\textwidth]{images/normalEqual}
+  \includegraphics[width=0.45\textwidth]{images/normalGreater}
+  \caption{Gráficos para distribución normal, con consultas por igualdad y por mayor respectivamente.}
+ \end{figure}
+
+ \subsubsection*{Análisis}
+
+ 
+ \subsection{Performance para distribuciones normal}
+A continuación mostraremos cómo se comportaron los distintos estimadores en cuanto al error medio obtenido ante la variación del parámetro $p$ de entrada del estimador. Para cada $p$, fueron realizadas $N$ consultas por igualdad y $N$ consultas por mayor.  
+
+\begin{figure}[h!]  
+  \centering
+  \includegraphics[width=0.45\textwidth]{images/uniformeEqual}
+  \includegraphics[width=0.45\textwidth]{images/uniformeGreater}
+  \caption{Gráficos para distribución uniforme, con consultas por igualdad y por mayor respectivamente.}
+ \end{figure}
+
+ \subsubsection*{Análisis}
+
+
+
+
 \subsection{Performance para diferentes distribuciones}
 En esta sección calculamos la performance de los estimadores en datasets de diferentes distribuciones provistas por la cátedra y análizamos, en cada caso, mediante un test de hipótesis, si alguno de los estimadores es significativamente mejor o si, en términos estadísticos, no existe una diferencia importante de performance. 
 El test utilizado es el \textit{Student’s T-Test Apareado} y para realizarlo necesitamos tener dos conjuntos de datos emparentados que representen la información que queremos comparar. En nuestro caso, para comparar el estimador $A$ con el estimador $B$ en cierto dataset, calculamos por un lado la performance de $A$ para estimar valores individuales del dataset y, por otro lado, la performance de $B$ para estimar esos mismos valores. Esto nos da dos listas de datos que están emparentadas por los valores que se estan estimando. Los valores a estimar cubren todo el rango de valores del dataset en intervalos de 10 unidades. Era necesario calcular la performance individual para diferentes valores del dataset y no simplemente tomar la performance como el promedio de todos esos valores ya que el valor promedio no es suficiente información para llevar adelante un test de hipótesis de estas características.
@@ -45,3 +73,27 @@ Presentamos a continuación los gráficos de los datasets utilizados:
  \end{figure}
  
  
+
+\newpage
+
+\begin{table}[h!t]
+\centering % centering table
+\begin{tabular}{c rrrrrrr} % creating eight columns
+\hline\hline %inserting double-line
+\ &\multicolumn{2}{c}{Propio}& \multicolumn{2}{c}{Classic}& \multicolumn{2}{c}{Steps} \\ [0.5ex] 
+\hline % inserts single-line
+ & E & G & E & G & E & G &  \\  
+\hline
+Propio &X  &X  &0-9 &0-9 &0-9 &0-9 \\ % Entering row contents
+\hline
+Classic &8  &-  &X &X &1-9 &6 \\
+\hline
+Steps &-  &- &- &0,3-5 &X &X  \\[1ex] % [1ex] adds vertical space
+\hline % inserts single-line
+\end{tabular}
+\caption{Comparación entre estimadores de cual es más significativo, en qué tipo consulta y en qué columnas. } %title of the table
+\label{tab:hresult}
+\end{table}
+
+\subsubsection*{Análisis}
+Como se puede apreciar en \ref{tab:hresult} podemos notar como el estimador creado por nosotros, se queda con todas las ``competencias'' entre los estimadores. Esto es debido a que nuestro estimador es perfecto. Es decir, siempre devolverá la probabilidad exacta del cumplimiento de la consulta (o de una parte de ella). Igualmente vale remarcar que el estimador ``Classic'' logró empatar (no marcar una diferencia significaente según el \textit{Student’s T-Test Apareado}) con el estimador perfecto, lo cual significa que anduvo muy bien en ese caso.

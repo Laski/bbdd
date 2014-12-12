@@ -44,7 +44,9 @@ La distribución normal utilizada tiene 10000 elementos con $\mu=500$ y $\sigma=
  \end{figure}
 
  \subsubsection*{Análisis}
-Gran parte del análisis es similar al caso uniforme con la excepción de que, como dijimos en el análisis teórico, el estimador clásico debería aumentar la performance al aumentar el parámetro. Esta mejora se aprecia únicamente en los primeros valores del experimento ya que llega rápidamente a una cantidad de buckets que le permite armar un histograma que caracteriza con precisión la distribución de este dataset. En este caso puede verse que el valor se encuentra alrededor de 10 pero en otros datasets este valor podría cambiar en incluso necesitarse muchos más buckets para llegar al máximo nivel de performance.
+Gran parte del análisis es similar al caso uniforme con la excepción de que, como dijimos en el análisis teórico, el estimador clásico debería aumentar la performance al aumentar el parámetro. Esta mejora se aprecia únicamente en los primeros valores del experimento ya que llega rápidamente a una cantidad de buckets que le permite armar un histograma que caracteriza con precisión la distribución de este dataset. En este caso puede verse que el valor se encuentra alrededor de 10 pero en otros datasets este valor podría cambiar, e incluso necesitarse muchos más buckets para llegar al máximo nivel de performance, dependiendo mayormente del $\sigma$ de la distribución.
+
+Observamos nuevamente el comportamiento errático de Distribution Steps para valores grandes de $S$, lo que aumenta la confianza en nuestra hipótesis de que el problema consiste en tener demasiada granularidad en los buckets.
 
 \subsection{Performance para diferentes distribuciones}
 En esta sección calculamos la performance de los estimadores en datasets de diferentes distribuciones provistas por la cátedra y análizamos, en cada caso, mediante un test de hipótesis, si alguno de los estimadores es significativamente mejor o si, en términos estadísticos, no existe una diferencia importante de performance. 
@@ -90,9 +92,9 @@ Presentamos a continuación los gráficos de los datasets utilizados:
   \caption{Gráficos de los datasets de las columnas c8 y c9}
  \end{figure}
  
- 
-
-\newpage
+\clearpage
+Los estimadores que comparamos fueron los dos provistos por el paper y el nuestro, todos con $S=10$, en un enfrentamiento ``triangular''.
+El cuadro indica, para una celda en la fila del estimador $X$, en la columna del estimador $Y$, subcolumna de selectividad $W$, en qué datasets de la tabla $X$ ``venció'' a $Y$ para la selectividad $W$, donde ``venció'' quiere decir que tuvo un menor error medio absoluto y que según el \textit{Student’s T-Test Apareado} la diferencia efectivamente fue significativa. La notación $i-j$ en una celda significa todos los valores entre $i$ e $j$, incluyendo ambos. Si un dataset $i$ no aparece ni en la celda $X, Y$ ni en la $Y, X$ hubo un ``empate'' en ese dataset (la diferencia no fue significativa).
 
 \begin{table}[h!t]
 \centering % centering table
@@ -102,16 +104,18 @@ Presentamos a continuación los gráficos de los datasets utilizados:
 \hline % inserts single-line
  & E & G & E & G & E & G &  \\  
 \hline
-Propio &X  &X  &0-9 &0-9 &0-9 &0-9 \\ % Entering row contents
+Propio &X  &X  &0-7, 9 &0-9 &0-9 &0-9 \\ % Entering row contents
 \hline
-Classic &8  &-  &X &X &1-9 &6 \\
+Classic &-  &-  &X &X &1-9 &6 \\
 \hline
-Steps &-  &- &- &0,3-5 &X &X  \\[1ex] % [1ex] adds vertical space
+Steps &-  &- &- &0, 3-5 &X &X  \\[1ex] % [1ex] adds vertical space
 \hline % inserts single-line
 \end{tabular}
-\caption{Comparación entre estimadores de cual es más significativo, en qué tipo consulta y en qué columnas. } %title of the table
+\caption{Comparación entre estimadores.} %title of the table
 \label{tab:hresult}
 \end{table}
 
 \subsubsection*{Análisis}
-Como se puede apreciar en \ref{tab:hresult} podemos notar como el estimador creado por nosotros, se queda con todas las ``competencias'' entre los estimadores. Esto es debido a que nuestro estimador es perfecto. Es decir, siempre devolverá la probabilidad exacta del cumplimiento de la consulta (o de una parte de ella). Igualmente vale remarcar que el estimador ``Classic'' logró empatar (no marcar una diferencia significaente según el \textit{Student’s T-Test Apareado}) con el estimador perfecto, lo cual significa que anduvo muy bien en ese caso.
+Como se puede apreciar en el cuadro \ref{tab:hresult} podemos notar como el estimador creado por nosotros se queda con todas las ``competencias'' entre los estimadores. Esto se debe, como ya mencionamos, a su perfección a nivel de performance. Igualmente vale remarcar que el estimador ``Classic'' logró empatarle (no marcar una diferencia significativa según el \textit{Student’s T-Test Apareado}) en la distribución 8, lo cual significa que anduvo muy bien en ese caso.
+
+

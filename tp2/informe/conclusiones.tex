@@ -1,1 +1,9 @@
 \section{Conclusiones}
+A lo largo del TP comprendimos que el problema de estimar la selectividad en una columna de una tabla no es trivial, sino que esconde todo un mundo de matemáticas, decisiones algoritmicas, de velocidad, de consumo de memoria de mayor o menor precisión. Implementamos diversos estimadores recomendados y diseñamos uno propio que funcionó perfectamente pero con gran costo espacial y temporal en casos generales.
+
+Analizamos la performance de los estimadores con diferentes distribuciones de datos, y concluimos que no hay un claro ganador para todas las distribuciones, sino que cada uno presenta ventajas y desventajas y que hace falta conocer el dominio en el que se van a utilizar para sacarles todo el jugo posible.
+
+Descubrimos también que el estimador ``perfecto'' trae asociado siempre un gran costo, ya sea en velocidad o en memoria (o ambas).
+
+La mayor parte de nuestras predicciones teóricas se verificaron en la práctica, pero encontramos una situación curiosa según la cual aumentar en exceso un parámetro que pensábamos estaba directamente asociado con la ``precisión'' terminaba repercutiendo negativamente en la performance del estimador, dada su implementación algorítmica.
+

@@ -7,3 +7,4 @@ Descubrimos también que el estimador ``perfecto'' trae asociado siempre un gran
 
 La mayor parte de nuestras predicciones teóricas se verificaron en la práctica, pero encontramos una situación curiosa según la cual aumentar en exceso un parámetro que pensábamos estaba directamente asociado con la ``precisión'' terminaba repercutiendo negativamente en la performance del estimador, dada su implementación algorítmica.
 
+Como conclusión general de nuestras comparaciones, sostenemos que nuestro estimador se comporta bien en el caso general si se pueden aceptar sus problemas de memoria y performance en ciertos casos. Si esto no es posible, priorizaríamos la elección del Histograma Clásico en el caso general, y solo eligiríamos el Steps si sabemos de antemano que las consultas presentarán mayormente desigualdades.

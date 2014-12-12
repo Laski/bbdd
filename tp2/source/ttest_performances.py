@@ -51,12 +51,20 @@ def diferencias_performance(tipo1, tipo2):
         perf2_greater = empirico.calcular_performance_global(est2.estimate_greater, est_perfecto.estimate_greater)
         
         p_equal, p_greater = ttest_estimadores(bd, tabla, col, est1, est2)
-        print "est1 equal: ", perf1_equal
-        print "est2 equal: ", perf2_equal
-        print "est1 greater: ", perf1_greater
-        print "est2 greater: ", perf2_greater
-        print "p-valor equal:", p_equal, "(SIGNIFICATIVO)" if p_equal < 0.05 else "(NO SIGNIFICATIVO)"
-        print "p-valor greater:", p_greater, "(SIGNIFICATIVO)" if p_greater < 0.05 else "(NO SIGNIFICATIVO)"
+        print "Equal:"
+        if p_equal >= 0.05:
+            print "\tEmpate"
+        elif perf1_equal < perf2_equal:
+            print "\tGana", tipo1.title(), "(P=" + str(p_equal) + ")"
+        else:
+            print "\tGana", tipo2.title(), "(P=" + str(p_equal) + ")"
+        print "Greater:"
+        if p_greater >= 0.05:
+            print "\tEmpate"
+        elif perf1_greater < perf2_greater:
+            print "\tGana", tipo1.title(), "(P=" + str(p_greater) + ")"
+        else:
+            print "\tGana", tipo2.title(), "(P=" + str(p_greater) + ")"
     print
 
 

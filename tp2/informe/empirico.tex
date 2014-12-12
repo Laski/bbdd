@@ -94,7 +94,7 @@ Presentamos a continuación los gráficos de los datasets utilizados:
  
 \clearpage
 Los estimadores que comparamos fueron los dos provistos por el paper y el nuestro, todos con $S=10$, en un enfrentamiento ``triangular''.
-El cuadro indica, para una celda en la fila del estimador $X$, en la columna del estimador $Y$, subcolumna de selectividad $W$, en qué datasets de la tabla $X$ ``venció'' a $Y$ para la selectividad $W$, donde ``venció'' quiere decir que tuvo un menor error medio absoluto y que según el \textit{Student’s T-Test Apareado} la diferencia efectivamente fue significativa. La notación $i-j$ en una celda significa todos los valores entre $i$ e $j$, incluyendo ambos. Si un dataset $i$ no aparece ni en la celda $X, Y$ ni en la $Y, X$ hubo un ``empate'' en ese dataset (la diferencia no fue significativa).
+El cuadro indica, para una celda en la fila del estimador $X$, en la columna del estimador $Y$, subcolumna de selectividad $W$, en qué datasets de la tabla $X$ ``venció'' a $Y$ para la selectividad $W$, donde ``venció'' quiere decir que tuvo un menor error medio absoluto y que según el \textit{Student’s T-Test Apareado} la diferencia efectivamente fue significativa. La notación $i-j$ en una celda significa todos los valores entre $i$ e $j$, incluyendo ambos. Si un dataset $i$ no aparece ni en la celda $X, Y$ ni en la $Y, X$ hubo un ``empate'' entre $X$ e $Y$ en ese dataset (la diferencia no fue significativa).
 
 \begin{table}[h!t]
 \centering % centering table
@@ -117,5 +117,3 @@ Steps &-  &- &- &0, 3-5 &X &X  \\[1ex] % [1ex] adds vertical space
 
 \subsubsection*{Análisis}
 Como se puede apreciar en el cuadro \ref{tab:hresult} podemos notar como el estimador creado por nosotros se queda con todas las ``competencias'' entre los estimadores. Esto se debe, como ya mencionamos, a su perfección a nivel de performance. Igualmente vale remarcar que el estimador ``Classic'' logró empatarle (no marcar una diferencia significativa según el \textit{Student’s T-Test Apareado}) en la distribución 8 (una suerte de hipérbola), lo cual significa que anduvo muy bien en ese caso.
-
-

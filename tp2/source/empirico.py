@@ -21,14 +21,6 @@ def calcular_performance_global(metodo_testeable, metodo_perfecto):
     return sum(performances_intermedias) / len(valores_consultas)
 
 
-def getxy(datos):
-    # transforma un diccionario en dos arreglos key, value
-    x = []
-    y = []
-    for p in sorted(datos.keys()):
-        x.append(p)
-        y.append(datos[p])
-    return x, y
     
 
 def calcular_error(archivo, tipo_estimador, tipo):
@@ -51,6 +43,14 @@ def calcular_error(archivo, tipo_estimador, tipo):
 
 
 def graficar(archivo, datos):
+    def getxy(datos):
+        # transforma un diccionario en dos arreglos key, value
+        x = []
+        y = []
+        for p in sorted(datos.keys()):
+            x.append(p)
+            y.append(datos[p])
+        return x, y
     plt.clf()
     for tipo_estimador in datos:
         x, y = getxy(datos[tipo_estimador])
@@ -58,6 +58,7 @@ def graficar(archivo, datos):
     plt.xlabel("Parametro p")
     plt.ylabel("Error medio")
     plt.legend()
+    plt.yscale('log')
     plt.savefig(archivo)
 
 

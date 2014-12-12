@@ -4,6 +4,11 @@
 A continuación mostraremos cómo se comportaron los distintos estimadores en cuanto al error medio obtenido ante la variación del parámetro $p$ de entrada del estimador. Para cada $p$, fueron realizadas $N$ consultas por igualdad y $N$ consultas por mayor.  
 
 
+\begin{figure}[h!]  
+  \centering
+  \includegraphics[width=0.45\textwidth]{../source/datasets/img/uniforme}
+  \caption{Distribución utilizada}
+ \end{figure}
  
 \begin{figure}[h!]  
   \centering
@@ -18,6 +23,13 @@ Estos datos confirman gran parte del análisis teórico que hicimos en la secci�
  \subsection{Performance para distribuciones normal}
 A continuación mostraremos cómo se comportaron los distintos estimadores en cuanto al error medio obtenido ante la variación del parámetro $p$ de entrada del estimador. Para cada $p$, fueron realizadas $N$ consultas por igualdad y $N$ consultas por mayor.  
 
+
+\begin{figure}[h!]  
+  \centering
+  \includegraphics[width=0.45\textwidth]{../source/datasets/img/normal}
+  \caption{Distribución utilizada}
+ \end{figure}
+
 \begin{figure}[h!]
   \centering
   \includegraphics[width=0.45\textwidth]{../source/datasets/img/normalEqual}
@@ -26,7 +38,7 @@ A continuación mostraremos cómo se comportaron los distintos estimadores en cu
  \end{figure}
 
  \subsubsection*{Análisis}
-
+Gran parte del análisis es similar al caso uniforme con la excepción de que, como dijimos en el análisis teórico, el estimador clásico debería aumentar la performance al aumentar el parámetro. Esta mejora se aprecia únicamente en los primeros valores del experimento ya que llega rápidamente a una cantidad de buckets que le permite armar un histograma que caracteriza con precisión la distribución de este dataset. En este caso puede verse que el valor se encuentra alrededor de 10 pero en otros datasets este valor podría cambiar en incluso necesitarse muchos más buckets para llegar al máximo nivel de performance.
 
 \subsection{Performance para diferentes distribuciones}
 En esta sección calculamos la performance de los estimadores en datasets de diferentes distribuciones provistas por la cátedra y análizamos, en cada caso, mediante un test de hipótesis, si alguno de los estimadores es significativamente mejor o si, en términos estadísticos, no existe una diferencia importante de performance. 

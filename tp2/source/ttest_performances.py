@@ -12,8 +12,8 @@ def graficar_dataset(nombre_bd, tabla, columna):
     values = list(bd.consultar(tabla, columna, ""))
     values = [v for (v,) in values]
     plt.hist(values, 200)
-    plt.ylabel("Valor")
-    plt.xlabel("Cantidad" + " (" + nombre_bd + " - " + tabla + " - " + columna + ")")
+    plt.ylabel("Cantidad")
+    plt.xlabel("Valor (" + columna + ")")
     archivo = "datasets/img/" + columna + ".png"
     plt.savefig(archivo)
 

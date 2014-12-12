@@ -3,29 +3,29 @@
 \subsection{Performance para distribuciones uniforme}
 A continuación mostraremos cómo se comportaron los distintos estimadores en cuanto al error medio obtenido ante la variación del parámetro $p$ de entrada del estimador. Para cada $p$, fueron realizadas $N$ consultas por igualdad y $N$ consultas por mayor.  
 
-\begin{figure}[h!]
+
+ 
+\begin{figure}[h!]  
   \centering
-  \includegraphics[width=0.45\textwidth]{images/normalEqual}
-  \includegraphics[width=0.45\textwidth]{images/normalGreater}
-  \caption{Gráficos para distribución normal, con consultas por igualdad y por mayor respectivamente.}
+  \includegraphics[width=0.45\textwidth]{../source/datasets/img/uniformeEqual}
+  \includegraphics[width=0.45\textwidth]{../source/datasets/img/uniformeGreater}
+  \caption{Gráficos para distribución uniforme, con consultas por igualdad y por mayor respectivamente.}
  \end{figure}
-
+ 
  \subsubsection*{Análisis}
-
+Estos datos confirman gran parte del análisis teórico que hicimos en la sección anterior. En primer lugar podemos ver cómo, en el caso de la estimación por igualdad, la elección del parámetro del estimador no modifica de manera alguna la performance. Además, en ese caso la performance de ambos estimadores es muy buena (entre 0.0002 y 0.001), como también habíamos predicho. En el caso de la estimación por mayor confirmamos que, en ambos estimadores, a diferencia de la estimación por igualdad, la elección del parámetro cambia drásticamente la performance obtenida, mejorandola al elevar el valor del parámetro. Un resultado que no estaba contemplado en el análisis teórico que a partir de cierto valor del parámetro la performance del estimador Distribution Steps cambia erráticamente, creemos que esto se debe a que llega cierto punto en el que, al tener muchos steps, empieza a haber valores que aparecen en más de un límite. Y en esa situación el algoritmo, si bien intenta minimizar el error en el caso promedio, pierde precisión al no poder ubicar unívocamente en qué bucket cae el valor de la consulta.
  
  \subsection{Performance para distribuciones normal}
 A continuación mostraremos cómo se comportaron los distintos estimadores en cuanto al error medio obtenido ante la variación del parámetro $p$ de entrada del estimador. Para cada $p$, fueron realizadas $N$ consultas por igualdad y $N$ consultas por mayor.  
 
-\begin{figure}[h!]  
+\begin{figure}[h!]
   \centering
-  \includegraphics[width=0.45\textwidth]{images/uniformeEqual}
-  \includegraphics[width=0.45\textwidth]{images/uniformeGreater}
-  \caption{Gráficos para distribución uniforme, con consultas por igualdad y por mayor respectivamente.}
+  \includegraphics[width=0.45\textwidth]{../source/datasets/img/normalEqual}
+  \includegraphics[width=0.45\textwidth]{../source/datasets/img/normalGreater}
+  \caption{Gráficos para distribución normal, con consultas por igualdad y por mayor respectivamente.}
  \end{figure}
 
  \subsubsection*{Análisis}
-
-
 
 
 \subsection{Performance para diferentes distribuciones}
@@ -36,39 +36,39 @@ Presentamos a continuación los gráficos de los datasets utilizados:
 
 \begin{figure}[h!]
   \centering
-  \includegraphics[width=0.45\textwidth]{./images/c0}
-  \includegraphics[width=0.45\textwidth]{./images/c1}
+  \includegraphics[width=0.45\textwidth]{./../source/datasets/img/c0}
+  \includegraphics[width=0.45\textwidth]{./../source/datasets/img/c1}
   \caption{Gráficos de los datasets de las columnas c0 y c1}
  \end{figure}
  
  
 \begin{figure}[h!]
   \centering
-  \includegraphics[width=0.45\textwidth]{./images/c2}
-  \includegraphics[width=0.45\textwidth]{./images/c3}
+  \includegraphics[width=0.45\textwidth]{./../source/datasets/img/c2}
+  \includegraphics[width=0.45\textwidth]{./../source/datasets/img/c3}
   \caption{Gráficos de los datasets de las columnas c2 y c3}
  \end{figure}
  
 \begin{figure}[h!]
   \centering
-  \includegraphics[width=0.45\textwidth]{./images/c4}
-  \includegraphics[width=0.45\textwidth]{./images/c5}
+  \includegraphics[width=0.45\textwidth]{./../source/datasets/img/c4}
+  \includegraphics[width=0.45\textwidth]{./../source/datasets/img/c5}
   \caption{Gráficos de los datasets de las columnas c4 y c5}
  \end{figure}
  
  
 \begin{figure}[h!]
   \centering
-  \includegraphics[width=0.45\textwidth]{./images/c6}
-  \includegraphics[width=0.45\textwidth]{./images/c7}
+  \includegraphics[width=0.45\textwidth]{./../source/datasets/img/c6}
+  \includegraphics[width=0.45\textwidth]{./../source/datasets/img/c7}
   \caption{Gráficos de los datasets de las columnas c6 y c7}
  \end{figure}
  
  
 \begin{figure}[h!]
   \centering
-  \includegraphics[width=0.45\textwidth]{./images/c8}
-  \includegraphics[width=0.45\textwidth]{./images/c9}
+  \includegraphics[width=0.45\textwidth]{./../source/datasets/img/c8}
+  \includegraphics[width=0.45\textwidth]{./../source/datasets/img/c9}
   \caption{Gráficos de los datasets de las columnas c8 y c9}
  \end{figure}
  

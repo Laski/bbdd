@@ -23,6 +23,9 @@ A continuación mostraremos cómo se comportaron los distintos estimadores en cu
   \caption{Gráficos para distribución uniforme, con consultas por igualdad y por mayor respectivamente.}
  \end{figure}
 
+ \subsubsection*{Análisis}
+
+
 
 
 \subsection{Performance para diferentes distribuciones}
@@ -83,11 +86,14 @@ Presentamos a continuación los gráficos de los datasets utilizados:
 \hline
 Propio &X  &X  &0-9 &0-9 &0-9 &0-9 \\ % Entering row contents
 \hline
-Classic &-  &-  &X &X &1-9 &6 \\
+Classic &8  &-  &X &X &1-9 &6 \\
 \hline
 Steps &-  &- &- &0,3-5 &X &X  \\[1ex] % [1ex] adds vertical space
 \hline % inserts single-line
 \end{tabular}
-\caption{Comparación entre estimadores de cual es más significativo, en qué tipo consulta y en qué columnas.} %title of the table
+\caption{Comparación entre estimadores de cual es más significativo, en qué tipo consulta y en qué columnas. } %title of the table
 \label{tab:hresult}
 \end{table}
+
+\subsubsection*{Análisis}
+Como se puede apreciar en \ref{tab:hresult} podemos notar como el estimador creado por nosotros, se queda con todas las ``competencias'' entre los estimadores. Esto es debido a que nuestro estimador es perfecto. Es decir, siempre devolverá la probabilidad exacta del cumplimiento de la consulta (o de una parte de ella). Igualmente vale remarcar que el estimador ``Classic'' logró empatar (no marcar una diferencia significaente según el \textit{Student’s T-Test Apareado}) con el estimador perfecto, lo cual significa que anduvo muy bien en ese caso.

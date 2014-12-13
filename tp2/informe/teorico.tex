@@ -45,7 +45,7 @@ El Histograma Clásico tendrá performance pobre en el centro de la distribució
 
 Distribution Steps también se verá muy beneficiado por un aumento de $S$ que le permita analizar con más definición los sectores de la distribución. En general intuimos que la performance será aceptable, dado que fue pensado para manejar correctamente la selectividad por mayor en los casos en que las distribuciones presentan grandes concentraciones de datos en cierto punto.
 
-\subsection{Performance de nuestro estimador propio}
+\subsection{Performance del estimador CuentaApariciones2.0\texttrademark}
 Por cómo está implementado, intuimos que para valores pequeños de $S$ nuestro estimador se comportará de modo muy similar al Historama Clásico en ambas distribuciones. La diferencia de performance en los valores con más repeticiones de la distribución no será suficiente para afectar significativamente al error medio si estos valores son muy pocos, y esto vale tanto para las consultas por igualdad como por mayor en las distribuciones normal y uniforme. Esto tiene que ver con que ambas distribuciones son densas (en el sentido de qué no dejan lagunas sin elementos), con lo cual el chaché de nuestro estimador no prooverá una ventaja signficativa frente a Histograma Clásico. Los casos para los cuales funciona muy bien son aquellos con pocos (en relación al parámetro) datos distintos.
 
 A medida que el parámetro aumente comenzará a hacerse más significativa la diferencia con el Histograma Clásico, y nuestro estimador comenzará a sacarle una ventaja mayor. Cuanta más cercano sea $S$ a la cantidad de elementos distintos mejor funcionará, es por esto que en distribuciones con pocos elementos distintos nuestro estimador se comporta muy bien.

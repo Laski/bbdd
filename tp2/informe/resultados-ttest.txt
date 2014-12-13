@@ -1,53 +1,55 @@
+parametro = 50
+
 #########################
 Classic vs Steps
 c0
 Equal:
 	Empate
 Greater:
-	Gana Steps (P=0.0479167534818)
+	Gana Steps (P=2.78274230238e-08)
 c1
 Equal:
-	Gana Classic (P=3.52316630478e-28)
+	Gana Classic (P=2.3232399059e-35)
 Greater:
 	Empate
 c2
 Equal:
-	Gana Classic (P=0.0075809745815)
+	Gana Classic (P=0.00431655184604)
 Greater:
 	Empate
 c3
 Equal:
-	Gana Classic (P=3.26562122818e-75)
+	Gana Classic (P=1.4483171952e-83)
 Greater:
-	Gana Steps (P=2.29868712143e-09)
+	Gana Steps (P=1.32490433063e-06)
 c4
 Equal:
-	Gana Classic (P=1.50934960767e-37)
+	Gana Classic (P=5.84235774016e-49)
 Greater:
-	Gana Steps (P=0.0320860225029)
+	Gana Steps (P=0.0307546268395)
 c5
 Equal:
-	Gana Classic (P=1.16519220137e-18)
+	Gana Classic (P=2.13707427825e-21)
 Greater:
-	Gana Steps (P=0.00260810762535)
+	Gana Steps (P=0.0185371913481)
 c6
 Equal:
-	Gana Classic (P=1.33999697606e-06)
+	Gana Classic (P=7.79225533312e-21)
 Greater:
-	Gana Classic (P=0.0199447281195)
+	Empate
 c7
 Equal:
-	Gana Classic (P=2.0600157774e-12)
+	Gana Classic (P=4.54475174069e-14)
 Greater:
 	Empate
 c8
 Equal:
-	Gana Classic (P=0.0326947995095)
+	Gana Classic (P=0.0146860138261)
 Greater:
 	Empate
 c9
 Equal:
-	Gana Classic (P=1.0840032301e-192)
+	Gana Classic (P=1.20376140114e-208)
 Greater:
 	Empate
 
@@ -55,105 +57,106 @@ Greater:
 Classic vs Propio
 c0
 Equal:
-	Gana Propio (P=3.02842986124e-24)
+	Gana Propio (P=0.0281828195744)
 Greater:
-	Gana Propio (P=6.10845094615e-31)
+	Empate
 c1
 Equal:
-	Gana Propio (P=1.18445575685e-07)
+	Empate
 Greater:
-	Gana Propio (P=4.30610853109e-13)
+	Empate
 c2
 Equal:
-	Gana Propio (P=0.00383126761574)
+	Gana Propio (P=0.0230425313964)
 Greater:
-	Gana Propio (P=0.0132481520895)
+	Gana Propio (P=0.0354524145287)
 c3
 Equal:
-	Gana Propio (P=2.01485275172e-93)
+	Gana Propio (P=0.0475653805403)
 Greater:
-	Gana Propio (P=1.53612078098e-76)
+	Empate
 c4
 Equal:
-	Gana Propio (P=1.19943418384e-51)
+	Gana Propio (P=0.0498041446325)
 Greater:
-	Gana Propio (P=4.61819768539e-44)
+	Empate
 c5
 Equal:
-	Gana Propio (P=2.18580655647e-11)
+	Gana Propio (P=0.0339085835158)
 Greater:
-	Gana Propio (P=1.57850695699e-17)
+	Gana Propio (P=0.0299142674321)
 c6
 Equal:
-	Gana Propio (P=2.03925202585e-42)
+	Empate
 Greater:
-	Gana Propio (P=7.69093053439e-45)
+	Empate
 c7
 Equal:
-	Gana Propio (P=3.85329129201e-06)
+	Empate
 Greater:
-	Gana Propio (P=1.23726462147e-09)
+	Empate
 c8
 Equal:
 	Empate
 Greater:
-	Gana Propio (P=0.0103938984209)
+	Gana Propio (P=0.0381167301557)
 c9
 Equal:
-	Gana Propio (P=0.000435538559036)
+	Empate
 Greater:
-	Gana Propio (P=9.30106642837e-15)
+	Gana Propio (P=0.0405476341474)
 
 #########################
 Steps vs Propio
 c0
 Equal:
-	Gana Propio (P=1.9976648544e-21)
+	Gana Propio (P=0.0142453878953)
 Greater:
-	Gana Propio (P=1.06443622123e-28)
+	Gana Steps (P=6.8196089738e-07)
 c1
 Equal:
-	Gana Propio (P=2.77531400486e-40)
+	Gana Propio (P=4.27734744287e-35)
 Greater:
-	Gana Propio (P=5.50752268623e-30)
+	Empate
 c2
 Equal:
-	Gana Propio (P=0.00405024139026)
+	Gana Propio (P=0.0051197161232)
 Greater:
-	Gana Propio (P=1.60744016507e-06)
+	Gana Propio (P=2.47065883803e-05)
 c3
 Equal:
-	Gana Propio (P=1.97248816633e-95)
+	Gana Propio (P=2.01969967887e-82)
 Greater:
-	Gana Propio (P=0.0)
+	Gana Steps (P=4.05966082411e-07)
 c4
 Equal:
-	Gana Propio (P=5.97582947263e-53)
+	Gana Propio (P=2.17078765364e-48)
 Greater:
-	Gana Propio (P=8.40525766751e-109)
+	Gana Steps (P=0.0135244279719)
 c5
 Equal:
-	Gana Propio (P=7.75203210914e-23)
+	Gana Propio (P=8.38291624107e-21)
 Greater:
-	Gana Propio (P=1.5611440714e-70)
+	Gana Steps (P=0.00037506441704)
 c6
 Equal:
-	Gana Propio (P=1.00295020056e-26)
+	Gana Propio (P=2.11122251713e-20)
 Greater:
-	Gana Propio (P=1.34808942347e-35)
+	Empate
 c7
 Equal:
-	Gana Propio (P=1.58614769031e-14)
+	Gana Propio (P=4.8744103805e-14)
 Greater:
-	Gana Propio (P=1.86764147891e-14)
+	Empate
 c8
 Equal:
-	Gana Propio (P=8.33437878751e-16)
+	Gana Propio (P=9.3304662595e-22)
 Greater:
-	Gana Propio (P=1.70785417601e-17)
+	Gana Propio (P=9.13767465194e-06)
 c9
 Equal:
-	Gana Propio (P=1.42944193584e-301)
+	Gana Propio (P=2.90222972234e-255)
 Greater:
-	Gana Propio (P=6.26096020503e-114)
+	Empate
+
 

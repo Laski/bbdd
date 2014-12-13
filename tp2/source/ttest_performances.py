@@ -97,7 +97,7 @@ def ttest_estimadores(bd, tabla, col, est1, est2):
 
 
 if __name__ == "__main__":
-    #graficar_datasets_catedra()
-    diferencias_performance("classic", "steps", 100)
-    diferencias_performance("classic", "propio", 100)
-    diferencias_performance("steps", "propio", 100)
+    graficar_datasets_catedra()
+    diferencias_performance("classic", "steps", 50)
+    diferencias_performance("classic", "propio", 50)
+    diferencias_performance("steps", "propio", 50)

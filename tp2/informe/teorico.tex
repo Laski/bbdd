@@ -46,16 +46,9 @@ El Histograma Clásico tendrá performance pobre en el centro de la distribució
 Distribution Steps también se verá muy beneficiado por un aumento de $S$ que le permita analizar con más definición los sectores de la distribución. En general intuimos que la performance será aceptable, dado que fue pensado para manejar correctamente la selectividad por mayor en los casos en que las distribuciones presentan grandes concentraciones de datos en cierto punto.
 
 \subsection{Performance de nuestro estimador propio}
-Dado que nuestro estimador obtiene el histograma más detallado posible de la distribución que analiza (pues todo bucket tiene ancho 1) podemos decir que no pierde información. A partir de una instancia de nuestro estimador se puede reconstruir la distribución entera, con lo cual CuentaApariciones\texttrademark es \textbf{perfecto}. Su error siempre será 0 porque tiene en él toda la información necesaria. ¿Dónde está el truco?
+Por cómo está implementado, intuimos que para valores pequeños de $S$ nuestro estimador se comportará de modo muy similar al Historama Clásico en ambas distribuciones. La diferencia de performance en los valores con más repeticiones de la distribución no será suficiente para afectar significativamente al error medio si estos valores son muy pocos, y esto vale tanto para las consultas por igualdad como por mayor en las distribuciones normal y uniforme. Esto tiene que ver con que ambas distribuciones son densas (en el sentido de qué no dejan lagunas sin elementos), con lo cual el chaché de nuestro estimador no prooverá una ventaja signficativa frente a Histograma Clásico. Los casos para los cuales funciona muy bien son aquellos con pocos (en relación al parámetro) datos distintos.
 
-Los problemas son tres:
-\begin{itemize}
- \item A decir verdad, sí pierde información: se pierde el orden en el que estaban los datos. No se puede reconstruir la columna, solo su multiconjunto de elementos.
- \item Ocupa grandes cantidades de memoria en el caso general. Para darnos una idea, en una distribución de rango un millón con todos los valores poblados, el estimador consume alrededor de 8MB. Puede parecer poco, pero si consideramos que en general las bases de datos usan estimadores para todos los atributos numéricos y en tablas variadas, el número puede salirse de control bastante rápidamente.
- \item Puede ponerse lento para calcular $Sel(>x_0)$ si $x_0$ no aparece en la columna. Tarda tiempo lineal en la cantidad de valores distintos de los elementos (porque hace una búsqueda lineal del máximo elemento menor a $x_0$), lo cual puede ser demasiado tiempo para una gran cantidad de valores distintos.
-\end{itemize}
-
-Entonces, concluimos que es un excelente estimador para distribuciones esparsas o de rangos pequeños, pero que puede no funcionar bien para distribuciones densas y muy extensas, y no escala para varias columnas en varias tablas. Lo cual nos lleva a la proxima sección...
+A medida que el parámetro aumente comenzará a hacerse más significativa la diferencia con el Histograma Clásico, y nuestro estimador comenzará a sacarle una ventaja mayor. Cuanta más cercano sea $S$ a la cantidad de elementos distintos mejor funcionará, es por esto que en distribuciones con pocos elementos distintos nuestro estimador se comporta muy bien.
 
 \subsection{Distribuciones en las que los estimadores exhiben baja perfomance}
 Mencionamos ya un poco este tema en la sección de estimadores. Miremos primero la selectividad por igualdad.
@@ -68,4 +61,5 @@ Respecto a la selectividad por mayor:
  \item Como ya mencionamos, el estimador de Histogramas Clásicos funcionará mal en distribuciones con muchos valores concentrados entre sí. Para valores pequeños de $S$, su estimación para valores que caigan en los buckets más poblados tiene un error muy grande.
  \item Nuevamente en una distribución con mucha variabilidad en sus datos, Distribution Steps se comportará pobremente a la hora de calcular $Sel(>x_0)$.
 \end{itemize}
-Repetimos que nuestro estimador es perfecto a nivel performance, sus problemas pasan por otro lado.
+
+Nuestro estimador es siempre mejor que Histogramas Clásicos (pues cuando no responden lo mismo, el nuestro responde con la respuesta perfecta), con lo cual las distribuciones donde tendrá problemas serán las mismas para el caso general (un $S$ pequeño en la relación a la cantidad de elementos distintos), aunque nuestro estimador mejora mucho algunos casos donde Histogramas Clásicos no se comporta bien (como el caso de pocos elementos distintos pero muy distribuidos).

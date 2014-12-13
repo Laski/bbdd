@@ -216,8 +216,7 @@ class DistributionSteps(Estimador):
 class EstimadorGrupo(Estimador):
     # usa el parametro para hacer un cache con ese tamaño
     def build_struct(self):
-        self.estimador_clasico = ClassicHistogram(self.nombre_db, self.tabla, self.columna, self.parametro) # acá puedo no pasarle parámetro y que sea el default (10)
-            # o pasarle el parámetro que me viene, opte por la segunda así el estimador de "respaldo" también mejora a medida que aumenta p
+        self.estimador_clasico = ClassicHistogram(self.nombre_db, self.tabla, self.columna, self.parametro)
         consulta_cache_igualdad = "SELECT " + self.columna + ", COUNT(*) FROM " + self.tabla + " GROUP BY " + self.columna + " ORDER BY COUNT(*) DESC"
         self.dict_cache_igualdad = dict((x, y) for x, y in [x for x in self.db.realizar_consulta(consulta_cache_igualdad)][:self.parametro])  # cache de tamaño self.parametro
         self.dict_cache_mayor = dict()

@@ -4,7 +4,7 @@ Los estimadores que diseñamos fueron tres: un estimador basado en histogramas c
 Los tres estimadores comparten una serie de premisas:
 \begin{itemize}
  \item Reciben por parámetro una columna para hacer su estimación
- \item Reciben un parámetro extra que influye en algún aspecto de su comportamiento (en adelante llamado $S$)
+ \item Reciben un parámetro extra que influye en algún aspecto de su comportamiento (en adelante llamado $S$) y limita su tamaño en memoria
  \item En su construcción pueden tomarse el tiempo que sea necesario para incializar sus estructuras...
  \item ...pero no pueden asumir que la columna completa entre en memoria. Es decir, deben hacer uso del motor de bases de datos para resolver las consultas que necesiten. 
  \item Una vez inicializados, deben responder rápidamente ambas consultas posibles: por igualdad (la probabilidad de que un elemento al azar de la columna sea igual a un $x_0$ pasado por parámetro) y por mayor (idem con mayor estricto en lugar de igual). Las llamamos $Sel(=x)$ y $Sel(>x)$.
@@ -59,22 +59,18 @@ y por último, dos casos borde:
 \end{itemize}
 
 \subsection{Estimador Propio}
-Al realizar los análisis de los estimadores presentados en el paper, descubrimos un caso en el cual ninguno de los dos es muy preciso: cuando el rango es grande pero los elementos toman pocos valores dentro de él (llamamos a estas \textbf{distribuciones esparsas}) con lo que nos propusimos encontrar un estimador que los resuelva correctamente. Fue así que dimos con el estimador CuentaApariciones\texttrademark que resuelve estos casos a la perfección. A la hora de su creación, genera dos diccionarios:
+Al realizar los análisis de los estimadores presentados en el paper, descubrimos un caso en el cual ninguno de los dos funciona de modo preciso: cuando el rango es grande pero los elementos toman pocos valores dentro de él (llamamos a estas \textbf{distribuciones esparsas}). Es por esto que nos propusimos encontrar un estimador que los resuelva correctamente. Fue así que dimos, en primer lugar, con el estimador CuentaApariciones\texttrademark que resolvía estos casos a la perfección. A la hora de su creación, generaba dos diccionarios:
 \begin{itemize}
- \item El primero guarda, para cada elemento, su cantidad de apariciones en la columna.
- \item El segundo guarda, para cada elemento, la suma de su cantidad de apariciones y las de todo elemento menor (como el anterior pero con el acumulado hasta el momento).
+ \item El primero guardaba, para cada elemento, su cantidad de apariciones en la columna.
+ \item El segundo guardaba, para cada elemento, la suma de su cantidad de apariciones y las de todo elemento menor (como el anterior pero con el acumulado hasta el momento).
 \end{itemize}
 
-Luego, para resolver las consultas por igualdad simplemente tiene que devolver la cantidad de apariciones del elemento (que puede ser 0 si no está en los diccionarios) sobre la cantidad de elementos totales, y esto lo puede computar fácilmente buscando $x_0$ en el primer diccionario.
+Luego, para resolver las consultas simplemente tenía que buscar al elemento en los diccionarios y computar la información a partir de allí.
 
-Para resolver las consultas por mayor hay tres casos:
+Sin embargo, esta primera versión tenía problemas irreconciliables con la consigna del TP:
 \begin{itemize}
- \item Si el elemento aparece en la distribución solo tiene que calcular el porcentaje de elementos mayores a él, esto es, $\frac{T-acum(x_0)}{T}$ con $T$ = la cantidad total de elementos y $acum(x_0)$ = el acumulado del elemento $x_0$.
- \item Si el elemento no aparece en la distribución pero cae dentro ($min < x_0 < max$) también hay que calcular el porcentaje de elementos mayores a él, lo cual se logra computando $Sel(>menor\_inmediato(x_0))$ donde $menor\_inmediato(x_0)$ es el máximo elemento menor a $x_0$ que sí aparece en la distribución.
- \item Si el elemento cae fuera de la distribución, procedemos como de costumbre devolviendo $1$ si es $<min$ o $0$ si es $>max$.
+ \item Se basaba fuertemente en que los elementos de la distribución entraban en memoria, lo cual no es cierto para el caso general.
+ \item No estimaba nada realmente, su precisión era perfecta porque no perdía información relevante.
 \end{itemize}
-Esto se calcula rápido si el elemento está en la distribución (solo hay que buscarlo en el segundo diccionario) o está fuera del rango, y un poco más lento si está dentro del rango pero no aparece (porque hay que buscar en los diccionarios el máximo elemento menor que sí aparezca).
 
-Para aprovechar el parámetro de algún modo, decidimos hacer un caché con los $S$ elementos más frecuentes, y armar un diccionario específico para ellos que es el primero en ser consultado. La precisión del algoritmo no depende del parámetro pero sí su velocidad.
-
-Notar que el primer diccionario es equivalente a un histograma donde todos los buckets tienen ancho 1 (aunque optimizado en su consumo de memoria para no guardar los elementos que no aparecen). Relacionado con esto, debemos aclarar que este estimador asume fuertemente que la cantidad de elementos distintos de la distribución entra en la memoria, pues guarda para cada uno de ellos dos enteros con información. Si se lo usa con distribuciones extensas y densas, su consumo de memoria es mucho mayor al de los otros estimadores.
+Es por esto que decidimos crear CuentaApariciones2.0\texttrademark con la modificación, a recomendación del tutor, de usar el parámetro $S$ cómo un límite de tamaño para la estructura, metiendo allí la información necesaria para responder las consultas (tanto por igualdad como por mayor) para $S$ valores seleccionados de la distribución. Elegimos los $S$ valores con más apariciones en la distribución. Cuando la consulta se hace por un valor que cumpla esto, nuestro histograma tendrá guardada su cantidad exacta de apariciones y la cantidad exacta de elementos mayores, con lo cual la performance en esos casos será perfecta. En caso de ser consultado por un valor que quede afuera de esta suerte de ``caché'', decidimos que nuestro estimador se comportara igual a uno basado en Histogramas Clásicos de parámetro $S$.

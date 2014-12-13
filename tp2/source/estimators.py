@@ -216,32 +216,30 @@ class DistributionSteps(Estimador):
 class EstimadorGrupo(Estimador):
     # usa el parametro para hacer un cache con ese tamaño
     def build_struct(self):
-        self.estimador_clasico = ClassicHistogram(self.nombre_db, self.tabla, self.columna, self.parametro) #acá puedo no pasarle parámetro y que sea el default (10) o pasarle el parámetro que me viene, opte por la segunda así el estimador de "respaldo" también mejora a medida que aumenta p
-        #self.dict_acum_values = dict(zip(list(sorted(self.dict_cant_values.keys())), list(acum)))
+        self.estimador_clasico = ClassicHistogram(self.nombre_db, self.tabla, self.columna, self.parametro) # acá puedo no pasarle parámetro y que sea el default (10)
+            # o pasarle el parámetro que me viene, opte por la segunda así el estimador de "respaldo" también mejora a medida que aumenta p
         consulta_cache_igualdad = "SELECT " + self.columna + ", COUNT(*) FROM " + self.tabla + " GROUP BY " + self.columna + " ORDER BY COUNT(*) DESC"
         self.dict_cache_igualdad = dict((x, y) for x, y in [x for x in self.db.realizar_consulta(consulta_cache_igualdad)][:self.parametro])  # cache de tamaño self.parametro
         self.dict_cache_mayor = dict()
         for x in list(self.dict_cache_igualdad):
             consulta = "SELECT COUNT(*) FROM " + self.tabla + " WHERE " + self.columna + " > " + str(x)
             (val,) = list(self.db.realizar_consulta(consulta))[0]
-            #print val
             self.dict_cache_mayor[x] = val
         
     def estimate_equal(self, valor):
         if valor in self.dict_cache_igualdad:
             return float(self.dict_cache_igualdad[valor]) / self.n_registros
         else:
+            # fallback
             return self.estimador_clasico.estimate_equal(valor)
 
     def estimate_greater(self, valor):
         if valor in self.dict_cache_mayor:
             return float(self.dict_cache_mayor[valor]) / self.n_registros
         else:
+            # fallback
             return self.estimador_clasico.estimate_greater(valor)
     
-#    def ubicar_menor_mas_cercano(self, valor):
-#        return max([v for v in self.dict_acum_values.keys() if v < valor])
-
 
 class EstimadorPerfecto(Estimador):
     """ Para comparar. Responde siempre la respuesta correcta, mirando toda la tabla """

@@ -5,7 +5,7 @@ Analizemos primero las diferencias entre los dos estimadores propuestos por la c
 
 Mirando el cuadro \ref{tab:hresult} podemos notar que el estimador \textbf{Classic} suele comportarse muy bien en \textbf{todas} las columnas de la base otorgada por la cátedra a la hora de consultar por igualdad. Basándonos en esto, podemos decir que si sabemos de antemano que la mayor parte de las consultas hechas al motor de optimizaciones de la base serán por igualdad, no dudaríamos en elegir \textbf{Classic} sobre \textbf{Steps}.
 
-No ocurre lo mismo cuando la consulta es de selectividad por mayor, como ya fue adelantado por nosotros en diversos puntos. De hecho se ``invierten'' los papeles y quien logra mejores resultados es el estimador \textbf{Steps}. Análogamente entonces, de saber que la mayor parte de consultas será por mayor (o por desigualdades en general) nos inclinaríamos por utilizar \textbf{Steps}.
+No ocurre lo mismo cuando la consulta es de selectividad por mayor, como ya fue adelantado por nosotros en diversos puntos. De hecho se ``invierten'' los papeles y quien logra mejores resultados es el estimador \textbf{Steps}. Análogamente entonces, de saber que la mayor parte de consultas será por mayor (o por desigualdades en general) nos inclinaríamos por utilizar \textbf{Steps} (aunque con un valor de $S$ no muy grande).
 
 Igualmente, dado que existen muchos empates en el caso de selectividad por mayor, creemos que la ventaja general la sigue teniendo \textbf{Classic}. Con lo cual para el caso general, si tuviésemos que elegir uno de los dos para tomarlo como estimador sin saber de antemano qué tipo de consultas será la más frecuente, elegiríamos \textbf{Classic}.
 
